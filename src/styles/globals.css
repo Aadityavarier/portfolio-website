@@ -285,4 +285,40 @@ body {
   .section-padding {
     padding: clamp(48px, 8vw, 96px) clamp(16px, 5vw, 32px);
   }
+
+  /* Hero: reduce excessive top spacing on mobile */
+  .hero-mesh.section-padding {
+    padding-top: 40px;
+    padding-bottom: 40px;
+  }
+
+  /* Orbs: reduce opacity on mobile */
+  .bg-orb {
+    opacity: 0.5;
+  }
+
+  /* Disable noise texture on mobile */
+  .noise-texture {
+    display: none;
+  }
 }
+
+/* ============================================
+   ANIMATED BACKGROUND ORB KEYFRAMES
+   ============================================ */
+
+@keyframes orb1 {
+  from { transform: translate(-10%, -20%) scale(1); }
+  to   { transform: translate(30%, 15%) scale(1.1); }
+}
+
+@keyframes orb2 {
+  from { transform: translate(60%, 50%) scale(1); }
+  to   { transform: translate(10%, -10%) scale(0.9); }
+}
+
+@keyframes orb3 {
+  from { transform: translate(20%, 10%) scale(1.05); }
+  to   { transform: translate(-15%, 40%) scale(0.95); }
+}
+

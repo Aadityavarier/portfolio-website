@@ -56,6 +56,11 @@ const pillars = [
     description:
       'Algorithmic systems, quantitative models, machine learning pipelines, and agentic AI workflows — built to process, predict, and automate.',
     tags: ['Python', 'SQL', 'TensorFlow', 'Quantitative Modeling', 'Agentic AI'],
+    approachBullets: [
+      'I start with the data pipeline before touching any model',
+      'Every model gets backtested or validated before it ships',
+      'I document failure modes, not just results',
+    ],
   },
   {
     icon: <BrowserIcon />,
@@ -63,6 +68,11 @@ const pillars = [
     description:
       'Full-stack production applications. From real-time dashboards and business management systems to client-facing interfaces that convert.',
     tags: ['React', 'Next.js', 'Supabase', 'Tailwind', 'Framer Motion'],
+    approachBullets: [
+      'Production-first thinking from day one — not prototype mentality',
+      'Every UI decision is made with the client\'s end user in mind',
+      'I don\'t hand over code, I hand over a working product',
+    ],
   },
   {
     icon: <AutomationIcon />,
@@ -70,6 +80,11 @@ const pillars = [
     description:
       'Systems that replace manual work. WhatsApp workflows, automated pipelines, and backend logic that runs while you focus elsewhere.',
     tags: ['n8n', 'WhatsApp API', 'Vercel', 'API Integration'],
+    approachBullets: [
+      'I map the manual process fully before automating anything',
+      'Automation should be invisible to the end user',
+      'Every workflow gets a fallback for when things break',
+    ],
   },
 ];
 

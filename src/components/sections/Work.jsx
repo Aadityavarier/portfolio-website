@@ -163,6 +163,8 @@ const additionalProjects = [
       'AI-powered fake internship offer letter detector. Three-layer weighted ensemble — rule engine, NLP classifier, and NER extractor.',
     tags: ['FastAPI', 'Next.js', 'Supabase', 'RoBERTa', 'NLP'],
     badge: 'AI TOOL',
+    significance:
+      'Thousands of students fall victim to fake internship scams every year. InternShield provides an instant, AI-driven credibility check that protects students from wasting time, money, and trust on fraudulent offers — turning a real-world vulnerability into a solved problem.',
   },
   {
     title: 'RTTI Website',
@@ -170,6 +172,8 @@ const additionalProjects = [
       'Commercial single-page site for a teacher training institute. Delivered with watermark-protected preview system before client payment.',
     tags: ['React', 'Vite', 'Tailwind', 'Framer Motion'],
     badge: 'FREELANCE',
+    significance:
+      'This was a real freelance delivery for a working educational institution. The watermark-preview system solved a trust problem common in freelance web development — clients see their site before paying, but can\'t use it without the final handoff. Real business, real revenue.',
   },
   {
     title: 'Business Automation Suite',
@@ -177,6 +181,8 @@ const additionalProjects = [
       'Multi-tenant micro-SaaS for local service businesses. WhatsApp Cloud API automation, booking workflows, and client communication pipelines.',
     tags: ['Next.js', 'n8n', 'Supabase', 'WhatsApp API'],
     badge: 'IN PROGRESS',
+    significance:
+      'Local service businesses — salons, repair shops, tutors — lose hours every week on manual booking and client follow-ups. This suite automates the entire communication pipeline through WhatsApp, the platform their customers already use. It\'s infrastructure for businesses that can\'t afford a tech team.',
   },
 ];
 

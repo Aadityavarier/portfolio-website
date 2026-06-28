@@ -39,3 +39,4 @@ dist-ssr/
 
 # Temporary shims / workarounds
 powershell.cmd
+.aider*

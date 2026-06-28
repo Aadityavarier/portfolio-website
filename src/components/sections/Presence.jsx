@@ -17,6 +17,7 @@ const presenceData = [
       'Managed post-event operations: attendee database, automated certificate distribution via Gmail, long-term community WhatsApp group.',
       'Conducted structured campus interviews across 10 qualitative research pillars for Google\'s data collection.',
     ],
+    closingLine: 'Three weeks in. One event run. 100% submission rate.',
   },
   {
     badge: 'Rotaract Club Member',
@@ -28,6 +29,7 @@ const presenceData = [
       'Distributed free books and study materials to orphanages',
     ],
     footer: 'Engineering systems for people, not just screens.',
+    closingLine: 'Because engineering is only meaningful if it serves people.',
   },
   {
     badge: 'SHAIDS · Students Hive of AI & Data Science',
@@ -39,6 +41,7 @@ const presenceData = [
       'Helped host AI Halloween Heist event',
       'Assisted in Design Thinking and Prompt Engineering workshops',
     ],
+    closingLine: 'The best way to learn tech is to put it in front of real people.',
   },
 ];
 
