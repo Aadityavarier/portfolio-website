@@ -52,7 +52,12 @@ const Hero = React.memo(() => {
       className="hero-mesh relative min-h-screen flex flex-col justify-center section-padding pt-[20vh] md:pt-0"
     >
       {/* Eyebrow */}
-      <div className="hero-anim hero-eyebrow flex items-center gap-2.5 mb-8">
+      <motion.div 
+        className="hero-anim hero-eyebrow flex items-center gap-2.5 mb-8"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2 }}
+      >
         <span className="relative flex h-[6px] w-[6px]">
           <span className="pulse-green absolute inline-flex h-full w-full rounded-full bg-green opacity-75" />
           <span className="relative inline-flex h-[6px] w-[6px] rounded-full bg-green" />
@@ -62,27 +67,62 @@ const Hero = React.memo(() => {
 
       {/* Name */}
       <h1 className="mb-6">
-        <span className="hero-anim hero-name-1 block text-hero text-text-primary will-change-transform">
+        <motion.span 
+          className="hero-anim hero-name-1 block text-hero text-text-primary will-change-transform"
+          initial={{ opacity: 0, x: -60 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.5 }}
+        >
           Aaditya
-        </span>
-        <span className="hero-anim hero-name-2 block text-hero text-text-primary will-change-transform">
+        </motion.span>
+        <motion.span 
+          className="hero-anim hero-name-2 block text-hero text-text-primary will-change-transform"
+          initial={{ opacity: 0, x: -60 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.7 }}
+        >
           Varier
-        </span>
+        </motion.span>
       </h1>
 
       {/* Subline */}
-      <p className="hero-anim hero-subline font-body font-light text-text-secondary will-change-transform"
-        style={{ fontSize: 'clamp(1rem, 2.5vw, 1.4rem)' }}>
+      <motion.p 
+        className="hero-anim hero-subline font-body font-light text-text-secondary will-change-transform"
+        style={{ fontSize: 'clamp(1rem, 2.5vw, 1.4rem)' }}
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1.1 }}
+      >
         I build products that do the work.
       </p>
 
       {/* Metadata */}
-      <p className="hero-anim hero-metadata text-metadata text-text-tertiary mt-8">
-        Final Year · AI & Data Science · Mumbai University · Google Gemini Campus Ambassador
+      <motion.p 
+        className="hero-anim hero-metadata text-metadata text-text-tertiary mt-8"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.4 }}
+      >
+        Third Year · AI & Data Science · Mumbai University · Google Gemini Campus Ambassador
       </p>
 
       {/* Scroll Indicator */}
-      <div className="hero-anim hero-scroll fixed bottom-10 transform -translate-x-1/2 flex flex-col items-center gap-3" style={{ left: '50%' }}>
+      <motion.div 
+        className="hero-anim hero-scroll"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.8 }}
+        style={{
+        position: 'absolute',
+        bottom: '2.5rem',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: '8px',
+        zIndex: 10
+      }}>
         <div
           className="w-[1px] h-[60px] pulse-scroll"
           style={{

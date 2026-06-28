@@ -7,30 +7,24 @@ import { EASE, DURATION, STAGGER } from '../../utils/animationConfig';
 
 gsap.registerPlugin(ScrollTrigger);
 
+const staggerContainer = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.1 } }
+};
+
 const categories = [
   {
-    label: 'AI & Data Science',
-    skills: [
-      'Python', 'SQL', 'TensorFlow', 'Keras', 'pandas', 'NumPy',
-      'Matplotlib', 'LSTM', 'Quantitative Modeling',
-      'Agentic AI Frameworks', 'Prompt Engineering',
-    ],
+    label: 'AI & DATA SCIENCE',
+    skills: ['Python', 'SQL', 'TensorFlow', 'Keras', 'pandas', 'NumPy', 'Matplotlib', 'LSTM', 'Quantitative Modeling', 'Agentic AI Frameworks', 'Prompt Engineering']
   },
   {
-    label: 'Web Development',
-    skills: [
-      'JavaScript', 'React', 'Next.js', 'Vite', 'Tailwind CSS',
-      'Framer Motion', 'HTML', 'CSS', 'REST APIs', 'Supabase',
-      'PostgreSQL', 'Vercel',
-    ],
+    label: 'WEB DEVELOPMENT', 
+    skills: ['JavaScript', 'React', 'Next.js', 'Vite', 'Tailwind CSS', 'Framer Motion', 'HTML', 'CSS', 'REST APIs', 'Supabase', 'PostgreSQL', 'Vercel']
   },
   {
-    label: 'Tools & Ecosystem',
-    skills: [
-      'Git', 'GitHub', 'n8n', 'WhatsApp Cloud API', 'GSAP',
-      'Figma', 'Google Gemini API', 'MSG91',
-    ],
-  },
+    label: 'TOOLS & ECOSYSTEM',
+    skills: ['Git', 'GitHub', 'n8n', 'WhatsApp Cloud API', 'GSAP', 'Figma', 'Google Gemini API', 'MSG91']
+  }
 ];
 
 const Stack = React.memo(() => {
@@ -84,20 +78,50 @@ const Stack = React.memo(() => {
       </div>
 
       {/* Categories */}
-      <div className="space-y-12">
-        {categories.map((category) => (
-          <div key={category.label} className="stack-group">
-            <h3 className="stack-label font-display text-lg font-semibold text-text-primary mb-5">
-              {category.label}
-            </h3>
-            <div className="flex flex-wrap gap-3">
-              {category.skills.map((skill) => (
-                <div key={skill} className="skill-pill will-change-transform">
-                  <SkillTag label={skill} />
-                </div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '3rem' }}>
+        {categories.map((cat, i) => (
+          <motion.div
+            key={i}
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+          >
+            <p style={{
+              fontFamily: 'JetBrains Mono, monospace',
+              fontSize: '0.7rem',
+              letterSpacing: '0.12em',
+              color: '#4A4A6A',
+              textTransform: 'uppercase',
+              marginBottom: '1rem'
+            }}>{cat.label}</p>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+              {cat.skills.map((skill, j) => (
+                <motion.span
+                  key={j}
+                  variants={{
+                    hidden: { opacity: 0, scale: 0.8 },
+                    visible: { opacity: 1, scale: 1, transition: { duration: 0.3 } }
+                  }}
+                  whileHover={{ scale: 1.08, borderColor: '#7B5EA7' }}
+                  style={{
+                    border: '1px solid #1E1E2E',
+                    borderRadius: '9999px',
+                    padding: '7px 18px',
+                    background: '#111118',
+                    color: '#8B8BA7',
+                    fontFamily: 'JetBrains Mono, monospace',
+                    fontSize: '0.75rem',
+                    display: 'inline-block',
+                    cursor: 'default',
+                    transition: 'all 0.2s ease'
+                  }}
+                >
+                  {skill}
+                </motion.span>
               ))}
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
     </section>
