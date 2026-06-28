@@ -49,7 +49,7 @@ const Hero = React.memo(() => {
   return (
     <section
       ref={sectionRef}
-      className="hero-mesh relative min-h-screen flex flex-col justify-center section-padding"
+      className="hero-mesh relative min-h-screen flex flex-col justify-center section-padding pt-[20vh] md:pt-0"
     >
       {/* Eyebrow */}
       <div className="hero-anim hero-eyebrow flex items-center gap-2.5 mb-8">
