@@ -1,0 +1,94 @@
+import React from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import PresenceCard from '../ui/PresenceCard';
+import useScrollAnimation from '../../hooks/useScrollAnimation';
+import { EASE, DURATION, STAGGER, OFFSET, isMobile } from '../../utils/animationConfig';
+
+gsap.registerPlugin(ScrollTrigger);
+
+const presenceData = [
+  {
+    badge: 'Google Student Ambassador 2025–26',
+    title: 'Google Gemini Campus Ambassador',
+    items: [
+      'Organized and executed "Battle of the Bands: AI Music Night" — a live virtual event where participants used Google Lyria to compose original music. Achieved 100% submission rate.',
+      'Built end-to-end workflow: Gemini Pro for prompt engineering, Lyria for music generation, Nano Banana for visual assets.',
+      'Managed post-event operations: attendee database, automated certificate distribution via Gmail, long-term community WhatsApp group.',
+      'Conducted structured campus interviews across 10 qualitative research pillars for Google\'s data collection.',
+    ],
+  },
+  {
+    badge: 'Rotaract Club Member',
+    title: 'Community Service',
+    items: [
+      'Hosted blood donation campaigns',
+      'Conducted self-defense workshops at Rotary Adivasi School',
+      'Organized health checkups for old age homes',
+      'Distributed free books and study materials to orphanages',
+    ],
+    footer: 'Engineering systems for people, not just screens.',
+  },
+  {
+    badge: 'SHAIDS · Students Hive of AI & Data Science',
+    title: 'Tech & Sports Teams',
+    items: [
+      'Tech team and sports team member',
+      'Volunteered in organizing Hack-Hive hackathon',
+      'Supported Technitude tech event',
+      'Helped host AI Halloween Heist event',
+      'Assisted in Design Thinking and Prompt Engineering workshops',
+    ],
+  },
+];
+
+const Presence = React.memo(() => {
+  const containerRef = useScrollAnimation((container) => {
+    const mobile = isMobile();
+    const offset = mobile ? OFFSET.small : OFFSET.standard;
+    const cards = container.querySelectorAll('.presence-card');
+
+    /* Set initial states immediately */
+    gsap.set(cards, { opacity: 0, y: offset });
+
+    /* Cards slide up with stagger */
+    gsap.to(cards, {
+      opacity: 1,
+      y: 0,
+      duration: DURATION.standard,
+      stagger: 0.15,
+      ease: EASE.entrance,
+      scrollTrigger: {
+        trigger: container,
+        start: 'top 75%',
+        toggleActions: 'play none none none',
+      },
+    });
+  });
+
+  return (
+    <section ref={containerRef} id="presence" className="section-padding">
+      {/* Section Header */}
+      <div className="mb-4">
+        <span className="text-label text-primary block mb-3">BEYOND THE SCREEN</span>
+        <h2 className="text-section-title text-text-primary">How I Operate</h2>
+      </div>
+      <p className="text-text-secondary font-light mb-16" style={{ fontSize: 'clamp(0.95rem, 2vw, 1.1rem)' }}>
+        Code is one output. This is the rest.
+      </p>
+
+      {/* Cards */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {presenceData.map((card) => (
+          <div key={card.title} className="presence-card will-change-transform">
+            <PresenceCard {...card} />
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+});
+
+Presence.displayName = 'Presence';
+
+export default Presence;
