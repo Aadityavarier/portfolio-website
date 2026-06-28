@@ -46,6 +46,26 @@ body {
   line-height: 1.7;
   overflow-x: hidden;
   cursor: none;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: 
+    radial-gradient(ellipse 70% 50% at 15% 40%, rgba(123,94,167,0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 60% at 85% 20%, rgba(155,127,212,0.08) 0%, transparent 55%),
+    #0A0A0F;
+  animation: bgShift 20s ease-in-out infinite alternate;
+  will-change: opacity;
+}
+
+@keyframes bgShift {
+  0%   { opacity: 1; }
+  50%  { opacity: 0.85; }
+  100% { opacity: 1; }
 }
 
 /* Restore default cursor on touch devices */
@@ -145,29 +165,8 @@ body {
   will-change: opacity;
 }
 
-/* ============================================
-   HERO MESH GRADIENT
-   ============================================ */
-
-@keyframes meshShift {
-  0% {
-    background-position: 20% 50%, 80% 20%;
-  }
-  50% {
-    background-position: 40% 30%, 60% 60%;
-  }
-  100% {
-    background-position: 30% 60%, 70% 40%;
-  }
-}
-
 .hero-mesh {
-  background:
-    radial-gradient(ellipse 80% 80% at 20% 50%, rgba(123, 94, 167, 0.08) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 60% at 80% 20%, rgba(155, 127, 212, 0.05) 0%, transparent 50%),
-    var(--color-bg);
-  background-size: 200% 200%, 200% 200%;
-  animation: meshShift 12s ease-in-out infinite alternate;
+  /* Removed old hero-mesh animation background since it's now handled purely by body::before */
 }
 
 /* ============================================
@@ -291,34 +290,5 @@ body {
     padding-top: 40px;
     padding-bottom: 40px;
   }
-
-  /* Orbs: reduce opacity on mobile */
-  .bg-orb {
-    opacity: 0.5;
-  }
-
-  /* Disable noise texture on mobile */
-  .noise-texture {
-    display: none;
-  }
-}
-
-/* ============================================
-   ANIMATED BACKGROUND ORB KEYFRAMES
-   ============================================ */
-
-@keyframes orb1 {
-  from { transform: translate(-10%, -20%) scale(1); }
-  to   { transform: translate(30%, 15%) scale(1.1); }
-}
-
-@keyframes orb2 {
-  from { transform: translate(60%, 50%) scale(1); }
-  to   { transform: translate(10%, -10%) scale(0.9); }
-}
-
-@keyframes orb3 {
-  from { transform: translate(20%, 10%) scale(1.05); }
-  to   { transform: translate(-15%, 40%) scale(0.95); }
 }
 

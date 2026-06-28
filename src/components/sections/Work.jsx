@@ -1,12 +1,7 @@
-import React from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import React, { useEffect, useState } from 'react';
 import ProjectCard from '../ui/ProjectCard';
 import SkillTag from '../ui/SkillTag';
-import useScrollAnimation from '../../hooks/useScrollAnimation';
-import { EASE, DURATION, STAGGER, OFFSET, isMobile } from '../../utils/animationConfig';
-
-gsap.registerPlugin(ScrollTrigger);
+import { useInView } from '../../hooks/useInView';
 
 /* ============================================
    ABSTRACT DASHBOARD MOCKUP (pure CSS/SVG)
@@ -75,7 +70,22 @@ const DashboardMockup = () => (
 /* ============================================
    SVG TRADING CHART (animated path)
    ============================================ */
-const TradingChart = () => {
+const TradingChart = ({ inView }) => {
+  const [strokeOffset, setStrokeOffset] = useState(1000); // arbitrarily large to start
+  const pathRef = React.useRef(null);
+
+  useEffect(() => {
+    if (pathRef.current) {
+      const length = pathRef.current.getTotalLength();
+      if (!inView) {
+        setStrokeOffset(length);
+      } else {
+        // Trigger draw animation
+        setStrokeOffset(0);
+      }
+    }
+  }, [inView]);
+
   return (
     <div className="relative w-full aspect-[4/3] rounded-xl overflow-hidden border border-border bg-bg">
       <svg viewBox="0 0 400 300" className="w-full h-full" preserveAspectRatio="xMidYMid meet">
@@ -117,13 +127,18 @@ const TradingChart = () => {
         </text>
         {/* Price line — trending upward with volatility */}
         <path
-          className="trading-chart-line"
+          ref={pathRef}
           d="M40,240 L65,220 L80,230 L100,200 L120,210 L140,180 L155,190 L170,160 L190,175 L210,140 L225,155 L240,120 L260,135 L275,100 L290,115 L310,80 L330,95 L345,70 L360,60 L380,50"
           fill="none"
           stroke="#9B7FD4"
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
+          style={{
+            strokeDasharray: pathRef.current ? pathRef.current.getTotalLength() : 1000,
+            strokeDashoffset: strokeOffset,
+            transition: 'stroke-dashoffset 2s ease-out'
+          }}
         />
         {/* Glow version (underneath) */}
         <path
@@ -190,164 +205,10 @@ const additionalProjects = [
    MAIN WORK SECTION
    ============================================ */
 const Work = React.memo(() => {
-  const containerRef = useScrollAnimation((container) => {
-    const mobile = isMobile();
-    const offset = mobile ? OFFSET.small : OFFSET.large;
-
-    /* ---- Project 1: CaterEase ---- */
-    const proj1 = container.querySelector('.project-1');
-    if (proj1) {
-      const proj1Text = proj1.querySelector('.proj1-text');
-      const proj1Mockup = proj1.querySelector('.proj1-mockup');
-      const proj1MobileEls = proj1.querySelectorAll('.proj1-mobile-anim');
-      const dashboardEls = proj1.querySelectorAll(
-        '.dashboard-chrome, .dashboard-sidebar, .dashboard-content'
-      );
-
-      if (!mobile) {
-        /* Set initial states */
-        gsap.set(proj1Text, { opacity: 0, x: -offset });
-        gsap.set(proj1Mockup, { opacity: 0, x: offset });
-        gsap.set(dashboardEls, { opacity: 0 });
-
-        /* Text slides from left, mockup slides from right — simultaneously */
-        gsap.to(proj1Text, {
-          opacity: 1,
-          x: 0,
-          duration: DURATION.major,
-          ease: EASE.entrance,
-          scrollTrigger: {
-            trigger: proj1,
-            start: 'top 75%',
-            toggleActions: 'play none none none',
-          },
-        });
-        gsap.to(proj1Mockup, {
-          opacity: 1,
-          x: 0,
-          duration: DURATION.major,
-          ease: EASE.entrance,
-          scrollTrigger: {
-            trigger: proj1,
-            start: 'top 75%',
-            toggleActions: 'play none none none',
-          },
-        });
-      } else {
-        /* Mobile: stacked, slide up */
-        gsap.set(proj1MobileEls, { opacity: 0, y: offset });
-        gsap.to(proj1MobileEls, {
-          opacity: 1,
-          y: 0,
-          duration: DURATION.standard,
-          stagger: STAGGER.default,
-          ease: EASE.entrance,
-          scrollTrigger: {
-            trigger: proj1,
-            start: 'top 80%',
-            toggleActions: 'play none none none',
-          },
-        });
-        gsap.set(dashboardEls, { opacity: 0 });
-      }
-
-      /* Dashboard assembly animation */
-      gsap.to(dashboardEls, {
-        opacity: 1,
-        duration: 0.6,
-        stagger: 0.2,
-        ease: EASE.entrance,
-        scrollTrigger: {
-          trigger: proj1,
-          start: 'top 65%',
-          toggleActions: 'play none none none',
-        },
-      });
-    }
-
-    /* ---- Project 2: Trading Bot ---- */
-    const proj2 = container.querySelector('.project-2');
-    if (proj2) {
-      /* SVG chart line draws itself using stroke-dashoffset */
-      const chartLine = proj2.querySelector('.trading-chart-line');
-      if (chartLine) {
-        const length = chartLine.getTotalLength();
-        gsap.set(chartLine, { strokeDasharray: length, strokeDashoffset: length });
-        gsap.to(chartLine, {
-          strokeDashoffset: 0,
-          duration: 2,
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: proj2,
-            start: 'top 70%',
-            toggleActions: 'play none none none',
-          },
-        });
-      }
-
-      if (!mobile) {
-        const proj2Chart = proj2.querySelector('.proj2-chart');
-        const proj2Text = proj2.querySelector('.proj2-text');
-
-        gsap.set(proj2Chart, { opacity: 0, x: -offset });
-        gsap.set(proj2Text, { opacity: 0, x: offset });
-
-        gsap.to(proj2Chart, {
-          opacity: 1,
-          x: 0,
-          duration: DURATION.major,
-          ease: EASE.entrance,
-          scrollTrigger: {
-            trigger: proj2,
-            start: 'top 75%',
-            toggleActions: 'play none none none',
-          },
-        });
-        gsap.to(proj2Text, {
-          opacity: 1,
-          x: 0,
-          duration: DURATION.major,
-          ease: EASE.entrance,
-          scrollTrigger: {
-            trigger: proj2,
-            start: 'top 75%',
-            toggleActions: 'play none none none',
-          },
-        });
-      } else {
-        const proj2MobileEls = proj2.querySelectorAll('.proj2-mobile-anim');
-        gsap.set(proj2MobileEls, { opacity: 0, y: offset });
-        gsap.to(proj2MobileEls, {
-          opacity: 1,
-          y: 0,
-          duration: DURATION.standard,
-          stagger: STAGGER.default,
-          ease: EASE.entrance,
-          scrollTrigger: {
-            trigger: proj2,
-            start: 'top 80%',
-            toggleActions: 'play none none none',
-          },
-        });
-      }
-    }
-
-    /* ---- Additional Project Cards ---- */
-    const additionalCards = container.querySelectorAll('.additional-card');
-    gsap.set(additionalCards, { opacity: 0, y: mobile ? OFFSET.small : OFFSET.standard });
-    gsap.to(additionalCards, {
-      opacity: 1,
-      y: 0,
-      duration: DURATION.standard,
-      stagger: STAGGER.default,
-      ease: EASE.entrance,
-      scrollTrigger: {
-        trigger: container.querySelector('.additional-grid'),
-        start: 'top 80%',
-        toggleActions: 'play none none none',
-      },
-    });
-  });
+  const [refTitle, inViewTitle] = useInView();
+  const [refProj1, inViewProj1] = useInView();
+  const [refProj2, inViewProj2] = useInView();
+  const [refAddl, inViewAddl] = useInView();
 
   const caterEaseTags = [
     'Next.js',
@@ -368,26 +229,46 @@ const Work = React.memo(() => {
     'Matplotlib',
   ];
 
+  const mobile = typeof window !== 'undefined' && window.innerWidth < 1024;
+
   return (
-    <section ref={containerRef} id="work" className="section-padding">
+    <section id="work" className="section-padding">
       {/* Section Header */}
-      <div className="mb-16">
+      <div 
+        ref={refTitle}
+        className="mb-16"
+        style={{
+          opacity: inViewTitle ? 1 : 0,
+          transform: inViewTitle ? 'translateY(0)' : 'translateY(40px)',
+          transition: 'opacity 0.8s ease, transform 0.8s ease'
+        }}
+      >
         <span className="text-label text-primary block mb-3">SELECTED WORK</span>
         <h2 className="text-section-title text-text-primary">Things I've Shipped</h2>
       </div>
 
       {/* ========== PROJECT 1 — CaterEase ========== */}
-      <div className="project-1 card mb-10 !p-0 overflow-hidden" data-cursor="project">
+      <div 
+        ref={refProj1}
+        className="card mb-10 !p-0 overflow-hidden" 
+        data-cursor="project"
+      >
         <div className="relative">
           {/* Project number watermark */}
           <span className="absolute top-6 right-8 font-mono text-text-tertiary text-[4rem] leading-none font-bold opacity-50 select-none">
             01
           </span>
 
-          {/* Desktop: side by side. Mobile: stacked */}
           <div className="flex flex-col lg:flex-row">
             {/* Text content */}
-            <div className="proj1-text proj1-mobile-anim lg:w-1/2 p-8 lg:p-12 will-change-transform">
+            <div 
+              className="lg:w-1/2 p-8 lg:p-12 will-change-transform"
+              style={{
+                opacity: inViewProj1 ? 1 : 0,
+                transform: inViewProj1 ? 'translate(0,0)' : (mobile ? 'translate(0,40px)' : 'translate(-40px,0)'),
+                transition: 'opacity 0.8s ease, transform 0.8s ease'
+              }}
+            >
               {/* Badge */}
               <span
                 className="inline-block px-3 py-1 rounded-full text-xs font-mono tracking-wider mb-6"
@@ -444,7 +325,14 @@ const Work = React.memo(() => {
             </div>
 
             {/* Mockup */}
-            <div className="proj1-mockup proj1-mobile-anim lg:w-1/2 p-6 lg:p-10 flex items-center will-change-transform">
+            <div 
+              className="lg:w-1/2 p-6 lg:p-10 flex items-center will-change-transform"
+              style={{
+                opacity: inViewProj1 ? 1 : 0,
+                transform: inViewProj1 ? 'translate(0,0)' : (mobile ? 'translate(0,40px)' : 'translate(40px,0)'),
+                transition: 'opacity 0.8s ease, transform 0.8s ease'
+              }}
+            >
               <DashboardMockup />
             </div>
           </div>
@@ -452,22 +340,39 @@ const Work = React.memo(() => {
       </div>
 
       {/* ========== PROJECT 2 — Trading Bot ========== */}
-      <div className="project-2 card mb-16 !p-0 overflow-hidden" data-cursor="project">
+      <div 
+        ref={refProj2}
+        className="card mb-16 !p-0 overflow-hidden" 
+        data-cursor="project"
+      >
         <div className="relative">
           {/* Project number watermark */}
           <span className="absolute top-6 right-8 font-mono text-text-tertiary text-[4rem] leading-none font-bold opacity-50 select-none">
             02
           </span>
 
-          {/* Desktop: chart left, text right. Mobile: stacked */}
           <div className="flex flex-col lg:flex-row">
             {/* Chart (appears first on mobile, left on desktop) */}
-            <div className="proj2-chart proj2-mobile-anim lg:w-1/2 p-6 lg:p-10 flex items-center will-change-transform order-1 lg:order-1">
-              <TradingChart />
+            <div 
+              className="lg:w-1/2 p-6 lg:p-10 flex items-center will-change-transform order-1 lg:order-1"
+              style={{
+                opacity: inViewProj2 ? 1 : 0,
+                transform: inViewProj2 ? 'translate(0,0)' : (mobile ? 'translate(0,40px)' : 'translate(-40px,0)'),
+                transition: 'opacity 0.8s ease, transform 0.8s ease'
+              }}
+            >
+              <TradingChart inView={inViewProj2} />
             </div>
 
             {/* Text content */}
-            <div className="proj2-text proj2-mobile-anim lg:w-1/2 p-8 lg:p-12 will-change-transform order-2 lg:order-2">
+            <div 
+              className="lg:w-1/2 p-8 lg:p-12 will-change-transform order-2 lg:order-2"
+              style={{
+                opacity: inViewProj2 ? 1 : 0,
+                transform: inViewProj2 ? 'translate(0,0)' : (mobile ? 'translate(0,40px)' : 'translate(40px,0)'),
+                transition: 'opacity 0.8s ease, transform 0.8s ease'
+              }}
+            >
               {/* Badge */}
               <span
                 className="inline-block px-3 py-1 rounded-full text-xs font-mono tracking-wider mb-6"
@@ -528,9 +433,20 @@ const Work = React.memo(() => {
       </div>
 
       {/* ========== ADDITIONAL PROJECTS ========== */}
-      <div className="additional-grid grid grid-cols-1 md:grid-cols-3 gap-6">
-        {additionalProjects.map((project) => (
-          <div key={project.title} className="additional-card will-change-transform">
+      <div 
+        ref={refAddl}
+        className="grid grid-cols-1 md:grid-cols-3 gap-6"
+      >
+        {additionalProjects.map((project, i) => (
+          <div 
+            key={project.title} 
+            className="will-change-transform"
+            style={{
+              opacity: inViewAddl ? 1 : 0,
+              transform: inViewAddl ? 'translateY(0)' : 'translateY(40px)',
+              transition: `opacity 0.7s ease ${i * 0.1}s, transform 0.7s ease ${i * 0.1}s`
+            }}
+          >
             <ProjectCard {...project} />
           </div>
         ))}

@@ -1,63 +1,110 @@
-import React, { useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
-import gsap from 'gsap';
+import React, { useEffect, useRef, useState } from 'react';
 import { prefersReducedMotion } from '../../utils/animationConfig';
 
 const Hero = React.memo(() => {
   const sectionRef = useRef(null);
+  const videoRef = useRef(null);
+
+  const [showEyebrow, setShowEyebrow] = useState(false);
+  const [showName1, setShowName1] = useState(false);
+  const [showName2, setShowName2] = useState(false);
+  const [showSubline, setShowSubline] = useState(false);
+  const [showMeta, setShowMeta] = useState(false);
+  const [showVideo, setShowVideo] = useState(true);
 
   useEffect(() => {
-    if (!sectionRef.current) return;
-    if (prefersReducedMotion()) return;
+    if (prefersReducedMotion()) {
+      setShowEyebrow(true);
+      setShowName1(true);
+      setShowName2(true);
+      setShowSubline(true);
+      setShowMeta(true);
+      return;
+    }
 
-    const ctx = gsap.context(() => {
-      // Set initial invisible states via GSAP (not CSS classes)
-      gsap.set(sectionRef.current, { opacity: 0, y: 40 });
-      gsap.set('.hero-eyebrow', { opacity: 0, y: 20 });
-      gsap.set('.hero-name-1', { opacity: 0, x: -60 });
-      gsap.set('.hero-name-2', { opacity: 0, x: -60 });
-      gsap.set('.hero-subline', { opacity: 0, y: 30 });
-      gsap.set('.hero-metadata', { opacity: 0 });
-      gsap.set('.hero-scroll', { opacity: 0 });
+    const t1 = setTimeout(() => setShowEyebrow(true), 0);
+    const t2 = setTimeout(() => setShowName1(true), 300);
+    const t3 = setTimeout(() => setShowName2(true), 500);
+    const t4 = setTimeout(() => setShowSubline(true), 800);
+    const t5 = setTimeout(() => setShowMeta(true), 1000);
 
-      // Animating the wrapper itself via ScrollTrigger
-      gsap.to(sectionRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top 100%',
-          toggleActions: 'play none none none',
-        },
-      });
-
-      // Sequenced entry animation on page load for inner content
-      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
-
-      tl.to('.hero-eyebrow', { opacity: 1, y: 0, duration: 0.6 }, 0.2)
-        .to('.hero-name-1', { opacity: 1, x: 0, duration: 1 }, 0.5)
-        .to('.hero-name-2', { opacity: 1, x: 0, duration: 1 }, 0.7)
-        .to('.hero-subline', { opacity: 1, y: 0, duration: 0.8 }, 1.1)
-        .to('.hero-metadata', { opacity: 1, duration: 0.6 }, 1.4)
-        .to('.hero-scroll', { opacity: 1, duration: 0.6 }, 1.8);
-    }, sectionRef);
-
-    return () => ctx.revert();
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+      clearTimeout(t4);
+      clearTimeout(t5);
+    };
   }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setShowVideo(false);
+      } else {
+        setShowVideo(true);
+      }
+    };
+    
+    // Initial check
+    handleResize();
+    
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video || !showVideo || prefersReducedMotion()) return;
+
+    const handleScroll = () => {
+      const scrolled = window.scrollY;
+      const maxScroll = window.innerHeight;
+      const progress = Math.min(scrolled / maxScroll, 1);
+      // Wait for video metadata to be loaded so duration is available
+      if (video.duration) {
+        video.currentTime = progress * video.duration;
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [showVideo]);
 
   return (
     <section
       ref={sectionRef}
-      className="hero-mesh relative min-h-screen flex flex-col justify-center section-padding pt-[20vh] md:pt-0"
+      className="hero-mesh relative min-h-[100vh] flex flex-col justify-center section-padding pt-[20vh] md:pt-0"
     >
+      {showVideo && (
+        <video
+          ref={videoRef}
+          src="/hero-bg.mp4"
+          muted
+          playsInline
+          preload="auto"
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100vw',
+            height: '100vh',
+            objectFit: 'cover',
+            zIndex: -1,
+            opacity: 0.18,
+            pointerEvents: 'none',
+          }}
+        />
+      )}
+
       {/* Eyebrow */}
-      <motion.div 
-        className="hero-anim hero-eyebrow flex items-center gap-2.5 mb-8"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2 }}
+      <div 
+        className="flex items-center gap-2.5 mb-8"
+        style={{
+          opacity: showEyebrow ? 1 : 0,
+          transform: showEyebrow ? 'translateY(0)' : 'translateY(20px)',
+          transition: 'opacity 0.6s ease, transform 0.6s ease'
+        }}
       >
         <span className="relative flex h-[6px] w-[6px]">
           <span className="pulse-green absolute inline-flex h-full w-full rounded-full bg-green opacity-75" />
@@ -68,62 +115,68 @@ const Hero = React.memo(() => {
 
       {/* Name */}
       <h1 className="mb-6">
-        <motion.span 
-          className="hero-anim hero-name-1 block text-hero text-text-primary will-change-transform"
-          initial={{ opacity: 0, x: -60 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.5 }}
+        <span 
+          className="block text-hero text-text-primary will-change-transform"
+          style={{
+            opacity: showName1 ? 1 : 0,
+            transform: showName1 ? 'translateX(0)' : 'translateX(-60px)',
+            transition: 'opacity 1s ease, transform 1s ease'
+          }}
         >
           Aaditya
-        </motion.span>
-        <motion.span 
-          className="hero-anim hero-name-2 block text-hero text-text-primary will-change-transform"
-          initial={{ opacity: 0, x: -60 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.7 }}
+        </span>
+        <span 
+          className="block text-hero text-text-primary will-change-transform"
+          style={{
+            opacity: showName2 ? 1 : 0,
+            transform: showName2 ? 'translateX(0)' : 'translateX(-60px)',
+            transition: 'opacity 1s ease, transform 1s ease'
+          }}
         >
           Varier
-        </motion.span>
+        </span>
       </h1>
 
       {/* Subline */}
-      <motion.p 
-        className="hero-anim hero-subline font-body font-light text-text-secondary will-change-transform"
-        style={{ fontSize: 'clamp(1rem, 2.5vw, 1.4rem)' }}
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.1 }}
+      <p 
+        className="font-body font-light text-text-secondary will-change-transform"
+        style={{ 
+          fontSize: 'clamp(1rem, 2.5vw, 1.4rem)',
+          opacity: showSubline ? 1 : 0,
+          transform: showSubline ? 'translateY(0)' : 'translateY(30px)',
+          transition: 'opacity 0.8s ease, transform 0.8s ease'
+        }}
       >
         I build products that do the work.
       </p>
 
       {/* Metadata */}
-      <motion.p 
-        className="hero-anim hero-metadata text-metadata text-text-tertiary mt-8"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.4 }}
+      <p 
+        className="text-metadata text-text-tertiary mt-8"
+        style={{
+          opacity: showMeta ? 1 : 0,
+          transition: 'opacity 0.6s ease'
+        }}
       >
         Third Year · AI & Data Science · Mumbai University · Google Gemini Campus Ambassador
-      </motion.p>
+      </p>
 
       {/* Scroll Indicator */}
-      <motion.div 
-        className="hero-anim hero-scroll"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.8 }}
+      <div 
         style={{
-        position: 'absolute',
-        bottom: '2.5rem',
-        left: '50%',
-        transform: 'translateX(-50%)',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        gap: '8px',
-        zIndex: 10
-      }}>
+          opacity: showMeta ? 1 : 0,
+          transition: 'opacity 0.6s ease',
+          position: 'absolute',
+          bottom: '2rem',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '8px',
+          zIndex: 10
+        }}
+      >
         <div
           className="w-[1px] h-[60px] pulse-scroll"
           style={{

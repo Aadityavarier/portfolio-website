@@ -1,21 +1,6 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import StatusDot from '../ui/StatusDot';
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 60 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
-};
-
-const fadeLeft = {
-  hidden: { opacity: 0, x: -60 },
-  visible: { opacity: 1, x: 0, transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] } }
-};
-
-const staggerContainer = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.15 } }
-};
+import { useInView } from '../../hooks/useInView';
 
 const currentItems = [
   {
@@ -45,33 +30,34 @@ const currentItems = [
 ];
 
 const Currently = React.memo(() => {
+  const [ref, inView] = useInView();
+
   return (
-    <section className="section-padding">
+    <section ref={ref} className="section-padding">
       {/* Section Header */}
-      <motion.div
-        initial="hidden"
-        whileInView="visible"
-        variants={fadeUp}
-        viewport={{ once: true, amount: 0.2 }}
+      <div 
         className="mb-16"
+        style={{
+          opacity: inView ? 1 : 0,
+          transform: inView ? 'translateY(0)' : 'translateY(40px)',
+          transition: 'opacity 0.8s ease, transform 0.8s ease'
+        }}
       >
         <span className="text-label text-primary block mb-3">RIGHT NOW</span>
         <h2 className="text-section-title text-text-primary">What's In The Lab</h2>
-      </motion.div>
+      </div>
 
       {/* Items */}
-      <motion.div
-        initial="hidden"
-        whileInView="visible"
-        variants={staggerContainer}
-        viewport={{ once: true, amount: 0.2 }}
-        className="max-w-3xl space-y-8"
-      >
-        {currentItems.map((item) => (
-          <motion.div
+      <div className="max-w-3xl space-y-8">
+        {currentItems.map((item, i) => (
+          <div
             key={item.title}
-            variants={fadeLeft}
             className="flex items-start gap-4"
+            style={{
+              opacity: inView ? 1 : 0,
+              transform: inView ? 'translateX(0)' : 'translateX(-40px)',
+              transition: `opacity 0.7s ease ${i * 0.15}s, transform 0.7s ease ${i * 0.15}s`
+            }}
           >
             <div className="mt-1.5">
               <StatusDot variant={item.variant} />

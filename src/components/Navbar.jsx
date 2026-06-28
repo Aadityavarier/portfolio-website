@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 
 const navItems = [
   { label: 'Work', href: '#work' },
@@ -95,66 +94,60 @@ const Navbar = () => {
           aria-label="Toggle menu"
           data-cursor="interactive"
         >
-          <motion.span
-            className="block w-6 h-[1.5px] bg-text-primary"
-            animate={{
-              rotate: menuOpen ? 45 : 0,
-              y: menuOpen ? 5 : 0,
+          <span
+            className="block w-6 h-[1.5px] bg-text-primary transition-all duration-300"
+            style={{
+              transform: menuOpen ? 'rotate(45deg) translateY(5px) translateX(2px)' : 'none',
             }}
-            transition={{ duration: 0.3 }}
           />
-          <motion.span
-            className="block w-6 h-[1.5px] bg-text-primary"
-            animate={{
+          <span
+            className="block w-6 h-[1.5px] bg-text-primary transition-all duration-200"
+            style={{
               opacity: menuOpen ? 0 : 1,
             }}
-            transition={{ duration: 0.2 }}
           />
-          <motion.span
-            className="block w-6 h-[1.5px] bg-text-primary"
-            animate={{
-              rotate: menuOpen ? -45 : 0,
-              y: menuOpen ? -5 : 0,
+          <span
+            className="block w-6 h-[1.5px] bg-text-primary transition-all duration-300"
+            style={{
+              transform: menuOpen ? 'rotate(-45deg) translateY(-5px) translateX(2px)' : 'none',
             }}
-            transition={{ duration: 0.3 }}
           />
         </button>
       </nav>
 
       {/* Mobile fullscreen overlay */}
-      <AnimatePresence>
-        {menuOpen && (
-          <motion.div
-            className="fixed inset-0 z-40 flex flex-col items-center justify-center"
-            style={{ backgroundColor: 'rgba(10, 10, 15, 0.97)' }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-          >
-            <div className="flex flex-col items-center gap-10">
-              {navItems.map((item, i) => (
-                <motion.a
-                  key={item.label}
-                  href={item.href}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    scrollTo(item.href);
-                  }}
-                  className="font-display text-3xl font-semibold text-text-primary hover:text-accent-glow transition-colors duration-300"
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  transition={{ delay: 0.1 + i * 0.08, duration: 0.4 }}
-                  data-cursor="interactive"
-                >
-                  {item.label}
-                </motion.a>
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <div
+        className="fixed inset-0 z-40 flex flex-col items-center justify-center"
+        style={{
+          backgroundColor: 'rgba(10, 10, 15, 0.97)',
+          opacity: menuOpen ? 1 : 0,
+          pointerEvents: menuOpen ? 'auto' : 'none',
+          visibility: menuOpen ? 'visible' : 'hidden',
+          transition: 'opacity 0.3s ease, visibility 0.3s ease',
+        }}
+      >
+        <div className="flex flex-col items-center gap-10">
+          {navItems.map((item, i) => (
+            <a
+              key={item.label}
+              href={item.href}
+              onClick={(e) => {
+                e.preventDefault();
+                scrollTo(item.href);
+              }}
+              className="font-display text-3xl font-semibold text-text-primary hover:text-accent-glow transition-colors duration-300"
+              style={{
+                opacity: menuOpen ? 1 : 0,
+                transform: menuOpen ? 'translateY(0)' : 'translateY(30px)',
+                transition: `opacity 0.4s ease ${0.1 + i * 0.08}s, transform 0.4s ease ${0.1 + i * 0.08}s`
+              }}
+              data-cursor="interactive"
+            >
+              {item.label}
+            </a>
+          ))}
+        </div>
+      </div>
     </>
   );
 };

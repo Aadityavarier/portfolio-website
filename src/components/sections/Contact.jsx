@@ -1,15 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 60 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
-};
-
-const staggerContainer = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.1 } }
-};
+import { useInView } from '../../hooks/useInView';
 
 const contactLinks = [
   {
@@ -27,62 +17,66 @@ const contactLinks = [
 ];
 
 const Contact = React.memo(() => {
+  const [ref, inView] = useInView();
+
   return (
     <section
+      ref={ref}
       id="contact"
       className="min-h-screen flex flex-col justify-center section-padding relative"
     >
       <div className="max-w-3xl">
         {/* Eyebrow */}
-        <motion.span
-          initial="hidden"
-          whileInView="visible"
-          variants={fadeUp}
-          viewport={{ once: true, amount: 0.2 }}
+        <span
           className="text-label text-primary block mb-6"
+          style={{
+            opacity: inView ? 1 : 0,
+            transform: inView ? 'translateY(0)' : 'translateY(40px)',
+            transition: 'opacity 0.8s ease 0s, transform 0.8s ease 0s'
+          }}
         >
           LET'S WORK TOGETHER
-        </motion.span>
+        </span>
 
         {/* Headline */}
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          variants={staggerContainer}
-          viewport={{ once: true, amount: 0.2 }}
-        >
-          <motion.h2
-            variants={fadeUp}
+        <div>
+          <h2
             className="text-text-primary font-display font-bold mb-6"
-            style={{ fontSize: 'clamp(2.5rem, 6vw, 5rem)', lineHeight: 1.1 }}
+            style={{ 
+              fontSize: 'clamp(2.5rem, 6vw, 5rem)', 
+              lineHeight: 1.1,
+              opacity: inView ? 1 : 0,
+              transform: inView ? 'translateY(0)' : 'translateY(40px)',
+              transition: 'opacity 0.8s ease 0.1s, transform 0.8s ease 0.1s'
+            }}
           >
             Got something
             <br />
-            <motion.span variants={fadeUp}>that needs building?</motion.span>
-          </motion.h2>
-        </motion.div>
+            <span>that needs building?</span>
+          </h2>
+        </div>
 
         {/* Subtext */}
-        <motion.p
-          initial="hidden"
-          whileInView="visible"
-          variants={fadeUp}
-          transition={{ delay: 0.3 }}
-          viewport={{ once: true, amount: 0.2 }}
+        <p
           className="text-text-secondary font-light mb-12"
-          style={{ fontSize: 'clamp(0.95rem, 2vw, 1.2rem)' }}
+          style={{ 
+            fontSize: 'clamp(0.95rem, 2vw, 1.2rem)',
+            opacity: inView ? 1 : 0,
+            transform: inView ? 'translateY(0)' : 'translateY(40px)',
+            transition: 'opacity 0.8s ease 0.2s, transform 0.8s ease 0.2s'
+          }}
         >
           Reach out. Tell me what you need. I'll tell you how I'd build it.
-        </motion.p>
+        </p>
 
         {/* Links */}
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          variants={fadeUp}
-          transition={{ delay: 0.4 }}
-          viewport={{ once: true, amount: 0.2 }}
+        <div
           className="flex flex-col sm:flex-row gap-6 sm:gap-10 mb-20"
+          style={{
+            opacity: inView ? 1 : 0,
+            transform: inView ? 'translateY(0)' : 'translateY(40px)',
+            transition: 'opacity 0.8s ease 0.3s, transform 0.8s ease 0.3s'
+          }}
         >
           {contactLinks.map((link) => (
             <a
@@ -100,11 +94,12 @@ const Contact = React.memo(() => {
       </div>
 
       {/* Footer */}
-      <motion.footer
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true, amount: 0.1 }}
+      <footer
         className="mt-auto border-t border-border bg-[rgba(10,10,15,0.8)] px-[clamp(24px,8vw,120px)] py-6"
+        style={{
+          opacity: inView ? 1 : 0,
+          transition: 'opacity 1s ease 0.4s'
+        }}
       >
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           {/* Left side */}
@@ -163,7 +158,7 @@ const Contact = React.memo(() => {
             Designed & Built by Aaditya Varier
           </a>
         </div>
-      </motion.footer>
+      </footer>
     </section>
   );
 });

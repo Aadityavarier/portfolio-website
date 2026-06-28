@@ -1,11 +1,6 @@
 import React from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import PillarCard from '../ui/PillarCard';
-import useScrollAnimation from '../../hooks/useScrollAnimation';
-import { EASE, DURATION, STAGGER, OFFSET, isMobile } from '../../utils/animationConfig';
-
-gsap.registerPlugin(ScrollTrigger);
+import { useInView } from '../../hooks/useInView';
 
 /* Minimal SVG Icons */
 const NeuralNetworkIcon = () => (
@@ -89,59 +84,44 @@ const pillars = [
 ];
 
 const WhatIBuild = React.memo(() => {
-  const containerRef = useScrollAnimation((container) => {
-    const mobile = isMobile();
-    const offset = mobile ? OFFSET.small : OFFSET.standard;
-    const line = container.querySelector('.connector-line');
-    const cards = container.querySelectorAll('.pillar-card');
-
-    /* Set initial states immediately */
-    gsap.set(line, { scaleX: 0, transformOrigin: 'left center' });
-    gsap.set(cards, { opacity: 0, y: offset });
-
-    /* Create timeline triggered when container is scrolled into view */
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: container,
-        start: 'top 75%',
-        toggleActions: 'play none none none',
-      },
-    });
-
-    tl.to(line, {
-      scaleX: 1,
-      duration: DURATION.standard,
-      ease: EASE.entrance,
-    })
-    .to(cards, {
-      opacity: 1,
-      y: 0,
-      duration: DURATION.standard,
-      stagger: 0.15,
-      ease: EASE.entrance,
-    }, '+=0.05'); // small delay after line draws before cards drop
-  });
+  const [ref, inView] = useInView();
 
   return (
-    <section ref={containerRef} className="section-padding">
-      {/* Section Header */}
-      <div className="mb-16">
+    <section ref={ref} id="what-i-build" className="section-padding">
+      <div 
+        className="mb-16"
+        style={{
+          opacity: inView ? 1 : 0,
+          transform: inView ? 'translateY(0)' : 'translateY(40px)',
+          transition: 'opacity 0.8s ease, transform 0.8s ease'
+        }}
+      >
         <span className="text-label text-primary block mb-3">WHAT I DO</span>
-        <h2 className="text-section-title text-text-primary">What I Build</h2>
+        <h2 className="text-section-title text-text-primary">Domains & Systems</h2>
       </div>
 
-      {/* Connector Line (desktop only) */}
-      <div className="hidden lg:block mb-10">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 relative">
         <div
-          className="connector-line h-[1px] w-full origin-left"
-          style={{ background: 'linear-gradient(to right, #7B5EA7, #1E1E2E)' }}
+          className="hidden lg:block absolute top-[50%] left-0 w-full h-[1px] -z-10"
+          style={{
+            background: 'linear-gradient(90deg, transparent, rgba(123,94,167,0.3) 50%, transparent)',
+            opacity: inView ? 1 : 0,
+            transform: inView ? 'scaleX(1)' : 'scaleX(0)',
+            transformOrigin: 'left center',
+            transition: 'opacity 1s ease 0.2s, transform 1s ease 0.2s'
+          }}
         />
-      </div>
 
-      {/* Pillar Cards */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {pillars.map((pillar) => (
-          <div key={pillar.title} className="pillar-card will-change-transform">
+        {pillars.map((pillar, i) => (
+          <div 
+            key={pillar.title} 
+            className="will-change-transform"
+            style={{
+              opacity: inView ? 1 : 0,
+              transform: inView ? 'translateY(0)' : 'translateY(40px)',
+              transition: `opacity 0.7s ease ${i * 0.15}s, transform 0.7s ease ${i * 0.15}s`
+            }}
+          >
             <PillarCard {...pillar} />
           </div>
         ))}

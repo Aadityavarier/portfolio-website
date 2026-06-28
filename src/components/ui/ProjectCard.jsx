@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { motion, AnimatePresence } from 'framer-motion';
 import SkillTag from './SkillTag';
 
 const isTouchDevice = () =>
@@ -68,14 +67,22 @@ const ProjectCard = React.memo(
 
     return (
       <>
-        <motion.div
+        <div
           className="card group"
           onClick={() => setIsExpanded(true)}
-          style={{ cursor: 'pointer' }}
-          whileHover={
-            touch ? undefined : { scale: 1.02, borderColor: '#7B5EA7' }
-          }
-          transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+          style={{ cursor: 'pointer', transition: 'transform 0.3s ease, border-color 0.3s ease' }}
+          onMouseEnter={(e) => {
+            if (!touch) {
+              e.currentTarget.style.transform = 'scale(1.02)';
+              e.currentTarget.style.borderColor = '#7B5EA7';
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (!touch) {
+              e.currentTarget.style.transform = 'scale(1)';
+              e.currentTarget.style.borderColor = '#1E1E2E';
+            }
+          }}
           data-cursor="project"
         >
           <div className="mb-4">
@@ -95,127 +102,123 @@ const ProjectCard = React.memo(
               <SkillTag key={tag} label={tag} />
             ))}
           </div>
-        </motion.div>
+        </div>
 
         {createPortal(
-          <AnimatePresence>
-            {isExpanded && (
-              <motion.div
-                key="project-modal"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2 }}
-                style={{ position: 'fixed', inset: 0, zIndex: 100 }}
+          <div
+            style={{
+              position: 'fixed',
+              inset: 0,
+              zIndex: 100,
+              pointerEvents: isExpanded ? 'auto' : 'none',
+              visibility: isExpanded ? 'visible' : 'hidden',
+              transition: 'visibility 0.3s',
+            }}
+          >
+            {/* Dark overlay */}
+            <div
+              onClick={() => setIsExpanded(false)}
+              style={{
+                position: 'absolute',
+                inset: 0,
+                background: 'rgba(0,0,0,0.85)',
+                backdropFilter: 'blur(8px)',
+                WebkitBackdropFilter: 'blur(8px)',
+                opacity: isExpanded ? 1 : 0,
+                transition: 'opacity 0.3s ease',
+              }}
+            />
+            {/* Centered card */}
+            <div
+              style={{
+                position: 'absolute',
+                inset: 0,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                pointerEvents: 'none',
+              }}
+            >
+              <div
+                className={isExpanded ? 'open' : ''}
+                style={{
+                  width: mobile ? '95vw' : 'min(700px, 90vw)',
+                  maxHeight: mobile ? '90vh' : '85vh',
+                  overflowY: 'auto',
+                  background: '#111118',
+                  border: '1px solid #7B5EA7',
+                  borderRadius: '16px',
+                  padding: '2.5rem',
+                  boxShadow: '0 0 80px rgba(123,94,167,0.3)',
+                  pointerEvents: isExpanded ? 'auto' : 'none',
+                  position: 'relative',
+                  opacity: isExpanded ? 1 : 0,
+                  transform: isExpanded ? 'scale(1)' : 'scale(0.95)',
+                  transition: 'opacity 0.3s ease, transform 0.3s ease',
+                }}
               >
-                {/* Dark overlay */}
-                <div
-                  onClick={() => setIsExpanded(false)}
-                  style={{
-                    position: 'absolute',
-                    inset: 0,
-                    background: 'rgba(0,0,0,0.85)',
-                    backdropFilter: 'blur(8px)',
-                    WebkitBackdropFilter: 'blur(8px)',
+                {/* Close button */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setIsExpanded(false);
                   }}
-                />
-                {/* Centered card */}
-                <div
                   style={{
                     position: 'absolute',
-                    inset: 0,
+                    top: '1.5rem',
+                    right: '1.5rem',
+                    background: 'none',
+                    border: '1px solid #1E1E2E',
+                    color: '#8B8BA7',
+                    borderRadius: '50%',
+                    width: '32px',
+                    height: '32px',
+                    cursor: 'pointer',
+                    fontSize: '1rem',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    pointerEvents: 'none',
                   }}
                 >
-                  <motion.div
-                    initial={{ scale: 0.85, y: 30 }}
-                    animate={{ scale: 1, y: 0 }}
-                    exit={{ scale: 0.85, y: 30 }}
-                    transition={{
-                      type: 'spring',
-                      stiffness: 300,
-                      damping: 30,
-                    }}
-                    style={{
-                      width: mobile ? '95vw' : 'min(700px, 90vw)',
-                      maxHeight: mobile ? '90vh' : '85vh',
-                      overflowY: 'auto',
-                      background: '#111118',
-                      border: '1px solid #7B5EA7',
-                      borderRadius: '16px',
-                      padding: '2.5rem',
-                      boxShadow: '0 0 80px rgba(123,94,167,0.3)',
-                      pointerEvents: 'auto',
-                      position: 'relative',
-                    }}
-                  >
-                    {/* Close button */}
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setIsExpanded(false);
-                      }}
-                      style={{
-                        position: 'absolute',
-                        top: '1.5rem',
-                        right: '1.5rem',
-                        background: 'none',
-                        border: '1px solid #1E1E2E',
-                        color: '#8B8BA7',
-                        borderRadius: '50%',
-                        width: '32px',
-                        height: '32px',
-                        cursor: 'pointer',
-                        fontSize: '1rem',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}
-                    >
-                      ×
-                    </button>
+                  ×
+                </button>
 
-                    {/* Badge */}
-                    <div className="mb-5">
-                      <BadgeEl />
-                    </div>
-
-                    {/* Title */}
-                    <h4 className="font-display text-2xl font-semibold text-text-primary mb-3">
-                      {title}
-                    </h4>
-
-                    {/* Description */}
-                    <p className="text-text-secondary text-sm leading-relaxed mb-6">
-                      {description}
-                    </p>
-
-                    {/* Tags */}
-                    <div className="flex flex-wrap gap-2 mb-8">
-                      {tags.map((tag) => (
-                        <SkillTag key={tag} label={tag} />
-                      ))}
-                    </div>
-
-                    {/* Significance */}
-                    {significance && (
-                      <div>
-                        <span className="text-label text-primary block mb-4">
-                          WHY THIS MATTERS
-                        </span>
-                        <p className="text-text-secondary text-sm leading-relaxed">
-                          {significance}
-                        </p>
-                      </div>
-                    )}
-                  </motion.div>
+                {/* Badge */}
+                <div className="mb-5">
+                  <BadgeEl />
                 </div>
-              </motion.div>
-            )}
-          </AnimatePresence>,
+
+                {/* Title */}
+                <h4 className="font-display text-2xl font-semibold text-text-primary mb-3">
+                  {title}
+                </h4>
+
+                {/* Description */}
+                <p className="text-text-secondary text-sm leading-relaxed mb-6">
+                  {description}
+                </p>
+
+                {/* Tags */}
+                <div className="flex flex-wrap gap-2 mb-8">
+                  {tags.map((tag) => (
+                    <SkillTag key={tag} label={tag} />
+                  ))}
+                </div>
+
+                {/* Significance */}
+                {significance && (
+                  <div>
+                    <span className="text-label text-primary block mb-4">
+                      WHY THIS MATTERS
+                    </span>
+                    <p className="text-text-secondary text-sm leading-relaxed">
+                      {significance}
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>,
           document.body
         )}
       </>

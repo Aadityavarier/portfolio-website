@@ -1,11 +1,6 @@
 import React from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import PresenceCard from '../ui/PresenceCard';
-import useScrollAnimation from '../../hooks/useScrollAnimation';
-import { EASE, DURATION, STAGGER, OFFSET, isMobile } from '../../utils/animationConfig';
-
-gsap.registerPlugin(ScrollTrigger);
+import { useInView } from '../../hooks/useInView';
 
 const presenceData = [
   {
@@ -46,44 +41,46 @@ const presenceData = [
 ];
 
 const Presence = React.memo(() => {
-  const containerRef = useScrollAnimation((container) => {
-    const mobile = isMobile();
-    const offset = mobile ? OFFSET.small : OFFSET.standard;
-    const cards = container.querySelectorAll('.presence-card');
-
-    /* Set initial states immediately */
-    gsap.set(cards, { opacity: 0, y: offset });
-
-    /* Cards slide up with stagger */
-    gsap.to(cards, {
-      opacity: 1,
-      y: 0,
-      duration: DURATION.standard,
-      stagger: 0.15,
-      ease: EASE.entrance,
-      scrollTrigger: {
-        trigger: container,
-        start: 'top 75%',
-        toggleActions: 'play none none none',
-      },
-    });
-  });
+  const [ref, inView] = useInView();
 
   return (
-    <section ref={containerRef} id="presence" className="section-padding">
+    <section ref={ref} id="presence" className="section-padding">
       {/* Section Header */}
-      <div className="mb-4">
+      <div 
+        className="mb-4"
+        style={{
+          opacity: inView ? 1 : 0,
+          transform: inView ? 'translateY(0)' : 'translateY(40px)',
+          transition: 'opacity 0.8s ease, transform 0.8s ease'
+        }}
+      >
         <span className="text-label text-primary block mb-3">BEYOND THE SCREEN</span>
         <h2 className="text-section-title text-text-primary">How I Operate</h2>
       </div>
-      <p className="text-text-secondary font-light mb-16" style={{ fontSize: 'clamp(0.95rem, 2vw, 1.1rem)' }}>
+      <p 
+        className="text-text-secondary font-light mb-16" 
+        style={{ 
+          fontSize: 'clamp(0.95rem, 2vw, 1.1rem)',
+          opacity: inView ? 1 : 0,
+          transform: inView ? 'translateY(0)' : 'translateY(20px)',
+          transition: 'opacity 0.8s ease 0.1s, transform 0.8s ease 0.1s'
+        }}
+      >
         Code is one output. This is the rest.
       </p>
 
       {/* Cards */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {presenceData.map((card) => (
-          <div key={card.title} className="presence-card will-change-transform">
+        {presenceData.map((card, i) => (
+          <div 
+            key={card.title} 
+            className="will-change-transform"
+            style={{
+              opacity: inView ? 1 : 0,
+              transform: inView ? 'translateY(0)' : 'translateY(40px)',
+              transition: `opacity 0.7s ease ${i * 0.15}s, transform 0.7s ease ${i * 0.15}s`
+            }}
+          >
             <PresenceCard {...card} />
           </div>
         ))}
