@@ -78,7 +78,7 @@ const Hero = React.memo(() => {
 
       {/* Metadata */}
       <p className="hero-anim hero-metadata text-metadata text-text-tertiary mt-8">
-        Third Year · AI & Data Science · Mumbai University · Google Gemini Campus Ambassador
+        Final Year · AI & Data Science · Mumbai University · Google Gemini Campus Ambassador
       </p>
 
       {/* Scroll Indicator */}
