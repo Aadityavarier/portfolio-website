@@ -105,7 +105,7 @@ const Hero = React.memo(() => {
         transition={{ delay: 1.4 }}
       >
         Third Year · AI & Data Science · Mumbai University · Google Gemini Campus Ambassador
-      </p>
+      </motion.p>
 
       {/* Scroll Indicator */}
       <motion.div 
