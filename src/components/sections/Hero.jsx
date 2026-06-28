@@ -82,7 +82,7 @@ const Hero = React.memo(() => {
       </p>
 
       {/* Scroll Indicator */}
-      <div className="hero-anim hero-scroll absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3">
+      <div className="hero-anim hero-scroll fixed bottom-10 transform -translate-x-1/2 flex flex-col items-center gap-3" style={{ left: '50%' }}>
         <div
           className="w-[1px] h-[60px] pulse-scroll"
           style={{
