@@ -143,7 +143,7 @@ const Contact = React.memo(() => {
               </svg>
             </a>
             <a
-              href="https://mail.google.com/mail/u/0/?fs=1&to=aadityav1703@gmail.com&tf=cm"
+              href="mailto:aadityav1703@gmail.com"
               target="_blank"
               rel="noopener noreferrer"
               className="w-9 h-9 rounded-full border border-border flex items-center justify-center hover:border-accent hover:bg-accent/10 transition-colors"
