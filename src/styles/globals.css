@@ -54,11 +54,6 @@ body {
   justify-content: flex-start;
   padding: clamp(24px, 8vw, 120px);
   box-sizing: border-box;
-  will-change: transform;
-}
-
-.transition-smooth {
-  transition-property: opacity, transform;
 }
 
 ::-webkit-scrollbar {
