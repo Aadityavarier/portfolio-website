@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { smoothScrollTo } from '../utils/smoothScroll';
 
 const sections = [
   'hero',
@@ -38,10 +39,7 @@ const ScrollDots = () => {
   }, []);
 
   const handleClick = (id) => {
-    const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
-    }
+    smoothScrollTo(id);
   };
 
   return (

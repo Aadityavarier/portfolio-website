@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { smoothScrollTo } from '../../utils/smoothScroll';
 
 const Hero = () => {
   const [mounted, setMounted] = useState(false);
@@ -12,10 +13,7 @@ const Hero = () => {
   }, []);
 
   const scrollTo = (id) => {
-    const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
-    }
+    smoothScrollTo(id);
   };
 
   return (
@@ -95,18 +93,29 @@ const Hero = () => {
         </p>
 
         {/* Metadata */}
-        <p 
-          className="font-mono text-[#4A4A6A] mb-12 transition-all duration-1000 cubic-bezier(0.16,1,0.3,1)"
+        <div 
+          className="mb-12 transition-all duration-1000 cubic-bezier(0.16,1,0.3,1) self-start"
           style={{
-            fontSize: '0.7rem',
-            letterSpacing: '0.08em',
             opacity: mounted ? 1 : 0,
             transform: mounted ? 'translateY(0)' : 'translateY(30px)',
             transitionDelay: '800ms'
           }}
         >
-          Third Year · AI & Data Science · Mumbai University · Google Gemini Campus Ambassador
-        </p>
+          <p 
+            className="font-mono text-[#C084FC]"
+            style={{
+              fontSize: '0.75rem',
+              letterSpacing: '0.05em',
+              background: 'rgba(123, 94, 167, 0.15)',
+              border: '1px solid rgba(123, 94, 167, 0.3)',
+              borderRadius: '8px',
+              padding: '10px 16px',
+              boxShadow: '0 0 20px rgba(123, 94, 167, 0.1)'
+            }}
+          >
+            Third Year · AI & Data Science · Mumbai University · Google Gemini Campus Ambassador
+          </p>
+        </div>
 
         {/* Buttons */}
         <div 

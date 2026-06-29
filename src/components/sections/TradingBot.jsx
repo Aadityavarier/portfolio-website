@@ -151,25 +151,6 @@ const TradingBot = () => {
             ))}
           </div>
 
-          <div style={animStyle(inView, 0.4, 30)}>
-            <a
-              href="#"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block font-body font-medium transition-colors duration-300"
-              style={{
-                border: '1px solid #7B5EA7',
-                color: '#9B7FD4',
-                borderRadius: '8px',
-                padding: '10px 24px',
-                fontSize: '0.9rem',
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(123,94,167,0.1)')}
-              onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
-            >
-              View on GitHub &rarr;
-            </a>
-          </div>
         </div>
 
       </div>

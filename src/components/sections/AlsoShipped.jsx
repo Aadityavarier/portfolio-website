@@ -75,19 +75,14 @@ const AlsoShipped = () => {
         {/* Cards Grid */}
         <div className="w-full max-w-6xl grid grid-cols-1 md:grid-cols-3 gap-6">
           {cards.map((card, idx) => (
-            <a
+            <div
               key={card.title}
-              href={card.link}
-              target="_blank"
-              rel="noopener noreferrer"
               className="group flex flex-col no-underline transition-all duration-300"
               style={{
-                background: 'rgba(17,17,24,0.8)',
+                background: 'rgba(17,17,24,0.95)',
                 border: '1px solid #1E1E2E',
                 borderRadius: '16px',
                 padding: '2rem',
-                backdropFilter: 'blur(10px)',
-                WebkitBackdropFilter: 'blur(10px)',
                 ...animStyle(inView, 0.3 + (idx * 0.12), 50)
               }}
               onMouseEnter={(e) => {
@@ -139,7 +134,7 @@ const AlsoShipped = () => {
                   </span>
                 ))}
               </div>
-            </a>
+            </div>
           ))}
         </div>
 

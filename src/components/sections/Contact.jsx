@@ -104,9 +104,7 @@ const Contact = () => {
         style={{
           borderTop: '1px solid #1E1E2E',
           padding: '20px clamp(24px, 8vw, 120px)',
-          background: 'rgba(10,10,15,0.8)',
-          backdropFilter: 'blur(10px)',
-          WebkitBackdropFilter: 'blur(10px)',
+          background: 'rgba(10,10,15,0.95)',
           opacity: inView ? 1 : 0,
           transition: 'opacity 1s ease 0.6s'
         }}

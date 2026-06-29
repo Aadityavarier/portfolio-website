@@ -40,12 +40,10 @@ const OperateCard = ({ badge, title, bullets, closing, styleAnim }) => {
         onClick={() => setIsExpanded(true)}
         className="group flex flex-col cursor-pointer transition-all duration-300 h-full"
         style={{
-          background: 'rgba(17,17,24,0.8)',
+          background: 'rgba(17,17,24,0.95)',
           border: '1px solid #1E1E2E',
           borderRadius: '16px',
           padding: '2rem',
-          backdropFilter: 'blur(10px)',
-          WebkitBackdropFilter: 'blur(10px)',
           ...styleAnim
         }}
         onMouseEnter={(e) => {

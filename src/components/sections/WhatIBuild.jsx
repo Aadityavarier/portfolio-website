@@ -42,12 +42,10 @@ const ServiceCard = ({ icon, title, line, tags, bullets, styleAnim }) => {
         style={{
           flex: 1,
           maxWidth: mobile ? '100%' : '340px',
-          background: 'rgba(17,17,24,0.8)',
+          background: 'rgba(17,17,24,0.95)',
           border: '1px solid #1E1E2E',
           borderRadius: '16px',
           padding: '2rem',
-          backdropFilter: 'blur(10px)',
-          WebkitBackdropFilter: 'blur(10px)',
           ...styleAnim
         }}
         onMouseEnter={(e) => {

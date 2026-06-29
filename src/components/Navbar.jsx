@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
+import { smoothScrollTo } from '../utils/smoothScroll';
+
 const navItems = [
   { label: 'Work', href: '#what-i-build' },
   { label: 'Stack', href: '#stack' },
@@ -23,10 +25,7 @@ const Navbar = () => {
 
   const scrollTo = useCallback((href) => {
     setMenuOpen(false);
-    const el = document.querySelector(href);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
-    }
+    smoothScrollTo(href);
   }, []);
 
   return (
@@ -35,9 +34,7 @@ const Navbar = () => {
         className="fixed top-0 left-0 right-0 z-[100] flex items-center justify-between transition-all duration-500"
         style={{
           padding: '24px clamp(24px, 8vw, 120px)',
-          backgroundColor: 'rgba(10, 10, 15, 0.6)',
-          backdropFilter: 'blur(20px)',
-          WebkitBackdropFilter: 'blur(20px)',
+          backgroundColor: 'rgba(10, 10, 15, 0.95)',
           borderBottom: '1px solid rgba(30,30,46,0.5)',
         }}
       >
