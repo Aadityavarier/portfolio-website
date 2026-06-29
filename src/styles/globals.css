@@ -54,6 +54,11 @@ body {
   justify-content: flex-start;
   padding: clamp(24px, 8vw, 120px);
   box-sizing: border-box;
+  will-change: transform;
+}
+
+.transition-smooth {
+  transition-property: opacity, transform;
 }
 
 ::-webkit-scrollbar {
@@ -99,8 +104,11 @@ html {
 
 @media (max-width: 767px) {
   .section {
-    padding: 24px;
-    justify-content: center;
+    padding: 100px 24px 60px 24px;
+    justify-content: flex-start;
+    height: auto;
+    min-height: 100dvh;
+    overflow-y: visible;
   }
 }
 

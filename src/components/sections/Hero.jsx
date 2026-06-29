@@ -34,7 +34,7 @@ const Hero = () => {
         
         {/* Eyebrow */}
         <div 
-          className="flex items-center gap-3 mb-8 transition-all duration-700 ease-out"
+          className="flex items-center gap-3 mb-8 transition-smooth duration-700 ease-out"
           style={{
             opacity: mounted ? 1 : 0,
             transform: mounted ? 'translateY(0)' : 'translateY(20px)',
@@ -54,9 +54,9 @@ const Hero = () => {
         </div>
 
         {/* Main headline */}
-        <h1 className="font-display font-bold text-text-primary leading-[0.95] tracking-tight mb-8">
+        <h1 className="font-display font-bold text-text-primary leading-[0.95] tracking-tight mb-12">
           <span 
-            className="block transition-all duration-1000 cubic-bezier(0.16,1,0.3,1)"
+            className="block transition-smooth duration-1000 cubic-bezier(0.16,1,0.3,1)"
             style={{
               fontSize: 'clamp(5rem, 12vw, 10rem)',
               opacity: mounted ? 1 : 0,
@@ -67,7 +67,7 @@ const Hero = () => {
             Aaditya
           </span>
           <span 
-            className="block transition-all duration-1000 cubic-bezier(0.16,1,0.3,1)"
+            className="block transition-smooth duration-1000 cubic-bezier(0.16,1,0.3,1)"
             style={{
               fontSize: 'clamp(5rem, 12vw, 10rem)',
               opacity: mounted ? 1 : 0,
@@ -81,7 +81,7 @@ const Hero = () => {
 
         {/* Subline */}
         <p 
-          className="font-body font-light text-[#8B8BA7] mb-6 transition-all duration-1000 cubic-bezier(0.16,1,0.3,1)"
+          className="font-body font-light text-[#8B8BA7] mb-12 md:mb-8 transition-smooth duration-1000 cubic-bezier(0.16,1,0.3,1)"
           style={{
             fontSize: 'clamp(1rem, 2.5vw, 1.5rem)',
             opacity: mounted ? 1 : 0,
@@ -94,7 +94,7 @@ const Hero = () => {
 
         {/* Metadata */}
         <div 
-          className="mb-12 transition-all duration-1000 cubic-bezier(0.16,1,0.3,1) self-start"
+          className="mb-24 transition-smooth duration-1000 cubic-bezier(0.16,1,0.3,1) self-start"
           style={{
             opacity: mounted ? 1 : 0,
             transform: mounted ? 'translateY(0)' : 'translateY(30px)',
@@ -102,14 +102,11 @@ const Hero = () => {
           }}
         >
           <p 
-            className="font-mono text-[#C084FC]"
+            className="font-mono text-[#C084FC] text-[0.65rem] md:text-xs leading-relaxed py-2 px-3 md:py-2.5 md:px-4 rounded-md md:rounded-lg"
             style={{
-              fontSize: '0.75rem',
               letterSpacing: '0.05em',
               background: 'rgba(123, 94, 167, 0.15)',
               border: '1px solid rgba(123, 94, 167, 0.3)',
-              borderRadius: '8px',
-              padding: '10px 16px',
               boxShadow: '0 0 20px rgba(123, 94, 167, 0.1)'
             }}
           >
@@ -119,7 +116,7 @@ const Hero = () => {
 
         {/* Buttons */}
         <div 
-          className="flex gap-4 transition-all duration-1000 cubic-bezier(0.16,1,0.3,1)"
+          className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto transition-smooth duration-1000 cubic-bezier(0.16,1,0.3,1)"
           style={{
             opacity: mounted ? 1 : 0,
             transform: mounted ? 'translateY(0)' : 'translateY(30px)',
@@ -128,7 +125,7 @@ const Hero = () => {
         >
           <button
             onClick={() => scrollTo('hotel-manager')}
-            className="font-body font-medium transition-transform duration-200 hover:scale-105 active:scale-95"
+            className="w-full sm:w-auto font-body font-medium transition-transform duration-200 hover:scale-105 active:scale-95"
             style={{
               background: '#7B5EA7',
               color: '#F8F8FF',
@@ -141,7 +138,7 @@ const Hero = () => {
           
           <button
             onClick={() => scrollTo('contact')}
-            className="font-body font-medium transition-transform duration-200 hover:scale-105 active:scale-95"
+            className="w-full sm:w-auto font-body font-medium transition-transform duration-200 hover:scale-105 active:scale-95"
             style={{
               background: 'transparent',
               color: '#8B8BA7',

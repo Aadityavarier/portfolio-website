@@ -51,7 +51,7 @@ const TradingBot = () => {
 
         {/* Left Content - SVG Chart */}
         <div 
-          className="flex-1 w-full max-w-xl hidden md:block"
+          className="flex-1 w-full max-w-xl block mt-12 md:mt-0"
           style={{
             opacity: inView ? 1 : 0,
             transform: inView ? 'translateX(0)' : 'translateX(-60px)',
