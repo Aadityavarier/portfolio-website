@@ -1,181 +1,156 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { prefersReducedMotion } from '../../utils/animationConfig';
+import React, { useEffect, useState } from 'react';
 
-const Hero = React.memo(() => {
-  const sectionRef = useRef(null);
-  const videoRef = useRef(null);
-
-  const [showEyebrow, setShowEyebrow] = useState(false);
-  const [showName1, setShowName1] = useState(false);
-  const [showName2, setShowName2] = useState(false);
-  const [showSubline, setShowSubline] = useState(false);
-  const [showMeta, setShowMeta] = useState(false);
-  const [showVideo, setShowVideo] = useState(true);
+const Hero = () => {
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    if (prefersReducedMotion()) {
-      setShowEyebrow(true);
-      setShowName1(true);
-      setShowName2(true);
-      setShowSubline(true);
-      setShowMeta(true);
-      return;
+    // Small delay to ensure smooth rendering before animation starts
+    const timer = setTimeout(() => {
+      setMounted(true);
+    }, 50);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const scrollTo = (id) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
     }
-
-    const t1 = setTimeout(() => setShowEyebrow(true), 0);
-    const t2 = setTimeout(() => setShowName1(true), 300);
-    const t3 = setTimeout(() => setShowName2(true), 500);
-    const t4 = setTimeout(() => setShowSubline(true), 800);
-    const t5 = setTimeout(() => setShowMeta(true), 1000);
-
-    return () => {
-      clearTimeout(t1);
-      clearTimeout(t2);
-      clearTimeout(t3);
-      clearTimeout(t4);
-      clearTimeout(t5);
-    };
-  }, []);
-
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth < 768) {
-        setShowVideo(false);
-      } else {
-        setShowVideo(true);
-      }
-    };
-    
-    // Initial check
-    handleResize();
-    
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video || !showVideo || prefersReducedMotion()) return;
-
-    const handleScroll = () => {
-      const scrolled = window.scrollY;
-      const maxScroll = window.innerHeight;
-      const progress = Math.min(scrolled / maxScroll, 1);
-      // Wait for video metadata to be loaded so duration is available
-      if (video.duration) {
-        video.currentTime = progress * video.duration;
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [showVideo]);
+  };
 
   return (
-    <section
-      ref={sectionRef}
-      className="hero-mesh relative min-h-[100vh] flex flex-col justify-center section-padding pt-[20vh] md:pt-0"
-    >
-      {showVideo && (
-        <video
-          ref={videoRef}
-          src="/hero-bg.mp4"
-          muted
-          playsInline
-          preload="auto"
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            width: '100vw',
-            height: '100vh',
-            objectFit: 'cover',
-            zIndex: -1,
-            opacity: 0.18,
-            pointerEvents: 'none',
-          }}
-        />
-      )}
-
-      {/* Eyebrow */}
-      <div 
-        className="flex items-center gap-2.5 mb-8"
+    <section id="hero" className="section relative min-h-screen">
+      {/* Overlay */}
+      <div
         style={{
-          opacity: showEyebrow ? 1 : 0,
-          transform: showEyebrow ? 'translateY(0)' : 'translateY(20px)',
-          transition: 'opacity 0.6s ease, transform 0.6s ease'
+          position: 'absolute',
+          inset: 0,
+          zIndex: 0,
+          background: 'rgba(10, 10, 15, 0.55)',
+          pointerEvents: 'none',
         }}
-      >
-        <span className="relative flex h-[6px] w-[6px]">
-          <span className="pulse-green absolute inline-flex h-full w-full rounded-full bg-green opacity-75" />
-          <span className="relative inline-flex h-[6px] w-[6px] rounded-full bg-green" />
-        </span>
-        <span className="text-label text-primary">AVAILABLE FOR PROJECTS</span>
+      />
+      
+      {/* Content wrapper */}
+      <div className="relative z-1 w-full flex flex-col justify-center max-w-7xl mx-auto">
+        
+        {/* Eyebrow */}
+        <div 
+          className="flex items-center gap-3 mb-8 transition-all duration-700 ease-out"
+          style={{
+            opacity: mounted ? 1 : 0,
+            transform: mounted ? 'translateY(0)' : 'translateY(20px)',
+            transitionDelay: '0ms'
+          }}
+        >
+          <span className="relative flex h-[6px] w-[6px]">
+            <span className="pulse-green absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75" />
+            <span className="relative inline-flex h-[6px] w-[6px] rounded-full bg-[#22C55E]" />
+          </span>
+          <span 
+            className="font-mono uppercase text-[#7B5EA7]"
+            style={{ fontSize: '0.75rem', letterSpacing: '0.1em' }}
+          >
+            AVAILABLE FOR PROJECTS
+          </span>
+        </div>
+
+        {/* Main headline */}
+        <h1 className="font-display font-bold text-text-primary leading-[0.95] tracking-tight mb-8">
+          <span 
+            className="block transition-all duration-1000 cubic-bezier(0.16,1,0.3,1)"
+            style={{
+              fontSize: 'clamp(5rem, 12vw, 10rem)',
+              opacity: mounted ? 1 : 0,
+              transform: mounted ? 'translateX(0)' : 'translateX(-60px)',
+              transitionDelay: '200ms'
+            }}
+          >
+            Aaditya
+          </span>
+          <span 
+            className="block transition-all duration-1000 cubic-bezier(0.16,1,0.3,1)"
+            style={{
+              fontSize: 'clamp(5rem, 12vw, 10rem)',
+              opacity: mounted ? 1 : 0,
+              transform: mounted ? 'translateX(0)' : 'translateX(-60px)',
+              transitionDelay: '380ms'
+            }}
+          >
+            Varier
+          </span>
+        </h1>
+
+        {/* Subline */}
+        <p 
+          className="font-body font-light text-[#8B8BA7] mb-6 transition-all duration-1000 cubic-bezier(0.16,1,0.3,1)"
+          style={{
+            fontSize: 'clamp(1rem, 2.5vw, 1.5rem)',
+            opacity: mounted ? 1 : 0,
+            transform: mounted ? 'translateY(0)' : 'translateY(30px)',
+            transitionDelay: '600ms'
+          }}
+        >
+          I build products that do the work.
+        </p>
+
+        {/* Metadata */}
+        <p 
+          className="font-mono text-[#4A4A6A] mb-12 transition-all duration-1000 cubic-bezier(0.16,1,0.3,1)"
+          style={{
+            fontSize: '0.7rem',
+            letterSpacing: '0.08em',
+            opacity: mounted ? 1 : 0,
+            transform: mounted ? 'translateY(0)' : 'translateY(30px)',
+            transitionDelay: '800ms'
+          }}
+        >
+          Third Year · AI & Data Science · Mumbai University · Google Gemini Campus Ambassador
+        </p>
+
+        {/* Buttons */}
+        <div 
+          className="flex gap-4 transition-all duration-1000 cubic-bezier(0.16,1,0.3,1)"
+          style={{
+            opacity: mounted ? 1 : 0,
+            transform: mounted ? 'translateY(0)' : 'translateY(30px)',
+            transitionDelay: '1000ms'
+          }}
+        >
+          <button
+            onClick={() => scrollTo('hotel-manager')}
+            className="font-body font-medium transition-transform duration-200 hover:scale-105 active:scale-95"
+            style={{
+              background: '#7B5EA7',
+              color: '#F8F8FF',
+              borderRadius: '8px',
+              padding: '12px 28px',
+            }}
+          >
+            See Work
+          </button>
+          
+          <button
+            onClick={() => scrollTo('contact')}
+            className="font-body font-medium transition-transform duration-200 hover:scale-105 active:scale-95"
+            style={{
+              background: 'transparent',
+              color: '#8B8BA7',
+              border: '1px solid #1E1E2E',
+              borderRadius: '8px',
+              padding: '12px 28px',
+            }}
+          >
+            Contact
+          </button>
+        </div>
+
       </div>
 
-      {/* Name */}
-      <h1 className="mb-6">
-        <span 
-          className="block text-hero text-text-primary will-change-transform"
-          style={{
-            opacity: showName1 ? 1 : 0,
-            transform: showName1 ? 'translateX(0)' : 'translateX(-60px)',
-            transition: 'opacity 1s ease, transform 1s ease'
-          }}
-        >
-          Aaditya
-        </span>
-        <span 
-          className="block text-hero text-text-primary will-change-transform"
-          style={{
-            opacity: showName2 ? 1 : 0,
-            transform: showName2 ? 'translateX(0)' : 'translateX(-60px)',
-            transition: 'opacity 1s ease, transform 1s ease'
-          }}
-        >
-          Varier
-        </span>
-      </h1>
-
-      {/* Subline */}
-      <p 
-        className="font-body font-light text-text-secondary will-change-transform"
-        style={{ 
-          fontSize: 'clamp(1rem, 2.5vw, 1.4rem)',
-          opacity: showSubline ? 1 : 0,
-          transform: showSubline ? 'translateY(0)' : 'translateY(30px)',
-          transition: 'opacity 0.8s ease, transform 0.8s ease'
-        }}
-      >
-        I build products that do the work.
-      </p>
-
-      {/* Metadata */}
-      <p 
-        className="text-metadata text-text-tertiary mt-8"
-        style={{
-          opacity: showMeta ? 1 : 0,
-          transition: 'opacity 0.6s ease'
-        }}
-      >
-        Third Year · AI & Data Science · Mumbai University · Google Gemini Campus Ambassador
-      </p>
-
-      {/* Scroll Indicator */}
+      {/* Scroll indicator */}
       <div 
-        style={{
-          opacity: showMeta ? 1 : 0,
-          transition: 'opacity 0.6s ease',
-          position: 'absolute',
-          bottom: '2rem',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: '8px',
-          zIndex: 10
-        }}
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 transition-opacity duration-1000 delay-[1200ms]"
+        style={{ opacity: mounted ? 1 : 0, zIndex: 1 }}
       >
         <div
           className="w-[1px] h-[60px] pulse-scroll"
@@ -183,14 +158,16 @@ const Hero = React.memo(() => {
             background: 'linear-gradient(to bottom, #7B5EA7, transparent)',
           }}
         />
-        <span className="font-mono text-text-tertiary" style={{ fontSize: '0.65rem' }}>
+        <span 
+          className="font-mono text-[#4A4A6A]" 
+          style={{ fontSize: '0.65rem' }}
+        >
           scroll
         </span>
       </div>
+
     </section>
   );
-});
-
-Hero.displayName = 'Hero';
+};
 
 export default Hero;

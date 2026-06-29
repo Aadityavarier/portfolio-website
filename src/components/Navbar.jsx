@@ -1,25 +1,15 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
 const navItems = [
-  { label: 'Work', href: '#work' },
+  { label: 'Work', href: '#what-i-build' },
   { label: 'Stack', href: '#stack' },
-  { label: 'Presence', href: '#presence' },
+  { label: 'Presence', href: '#how-i-operate' },
   { label: 'Contact', href: '#contact' },
 ];
 
 const Navbar = () => {
-  const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 100);
-    };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  /* Lock body scroll when menu is open */
   useEffect(() => {
     if (menuOpen) {
       document.body.style.overflow = 'hidden';
@@ -31,39 +21,35 @@ const Navbar = () => {
     };
   }, [menuOpen]);
 
-  const scrollTo = useCallback(
-    (href) => {
-      setMenuOpen(false);
-      const el = document.querySelector(href);
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth' });
-      }
-    },
-    []
-  );
+  const scrollTo = useCallback((href) => {
+    setMenuOpen(false);
+    const el = document.querySelector(href);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, []);
 
   return (
     <>
       <nav
-        className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between transition-all duration-500"
+        className="fixed top-0 left-0 right-0 z-[100] flex items-center justify-between transition-all duration-500"
         style={{
-          padding: 'clamp(16px, 3vw, 24px) clamp(24px, 8vw, 120px)',
-          backgroundColor: scrolled ? 'rgba(10, 10, 15, 0.85)' : 'transparent',
-          backdropFilter: scrolled ? 'blur(20px)' : 'none',
-          WebkitBackdropFilter: scrolled ? 'blur(20px)' : 'none',
-          borderBottom: scrolled ? '1px solid #1E1E2E' : '1px solid transparent',
+          padding: '24px clamp(24px, 8vw, 120px)',
+          backgroundColor: 'rgba(10, 10, 15, 0.6)',
+          backdropFilter: 'blur(20px)',
+          WebkitBackdropFilter: 'blur(20px)',
+          borderBottom: '1px solid rgba(30,30,46,0.5)',
         }}
       >
         {/* Wordmark */}
         <a
-          href="#"
+          href="#hero"
           onClick={(e) => {
             e.preventDefault();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            scrollTo('#hero');
           }}
           className="font-display font-semibold text-text-primary z-50 relative"
           style={{ fontSize: '1.1rem' }}
-          data-cursor="interactive"
         >
           Aaditya Varier
         </a>
@@ -80,7 +66,6 @@ const Navbar = () => {
               }}
               className="nav-link font-body text-text-secondary hover:text-text-primary transition-colors duration-300"
               style={{ fontSize: '0.9rem' }}
-              data-cursor="interactive"
             >
               {item.label}
             </a>
@@ -89,35 +74,28 @@ const Navbar = () => {
 
         {/* Mobile hamburger */}
         <button
-          className="md:hidden z-50 relative w-8 h-8 flex flex-col justify-center items-center gap-1.5"
+          className="md:hidden z-[101] relative w-8 h-8 flex flex-col justify-center items-center gap-1.5"
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Toggle menu"
-          data-cursor="interactive"
         >
           <span
-            className="block w-6 h-[1.5px] bg-text-primary transition-all duration-300"
-            style={{
-              transform: menuOpen ? 'rotate(45deg) translateY(5px) translateX(2px)' : 'none',
-            }}
+            className="block w-6 h-[1.5px] bg-[#F8F8FF] transition-all duration-300"
+            style={{ transform: menuOpen ? 'rotate(45deg) translateY(5px) translateX(2px)' : 'none' }}
           />
           <span
-            className="block w-6 h-[1.5px] bg-text-primary transition-all duration-200"
-            style={{
-              opacity: menuOpen ? 0 : 1,
-            }}
+            className="block w-6 h-[1.5px] bg-[#F8F8FF] transition-all duration-200"
+            style={{ opacity: menuOpen ? 0 : 1 }}
           />
           <span
-            className="block w-6 h-[1.5px] bg-text-primary transition-all duration-300"
-            style={{
-              transform: menuOpen ? 'rotate(-45deg) translateY(-5px) translateX(2px)' : 'none',
-            }}
+            className="block w-6 h-[1.5px] bg-[#F8F8FF] transition-all duration-300"
+            style={{ transform: menuOpen ? 'rotate(-45deg) translateY(-5px) translateX(2px)' : 'none' }}
           />
         </button>
       </nav>
 
       {/* Mobile fullscreen overlay */}
       <div
-        className="fixed inset-0 z-40 flex flex-col items-center justify-center"
+        className="fixed inset-0 z-[90] flex flex-col items-center justify-center"
         style={{
           backgroundColor: 'rgba(10, 10, 15, 0.97)',
           opacity: menuOpen ? 1 : 0,
@@ -141,7 +119,6 @@ const Navbar = () => {
                 transform: menuOpen ? 'translateY(0)' : 'translateY(30px)',
                 transition: `opacity 0.4s ease ${0.1 + i * 0.08}s, transform 0.4s ease ${0.1 + i * 0.08}s`
               }}
-              data-cursor="interactive"
             >
               {item.label}
             </a>
