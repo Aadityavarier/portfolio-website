@@ -11,6 +11,7 @@ const pillAnimStyle = (inView, index) => ({
   opacity: inView ? 1 : 0,
   transform: inView ? 'scale(1)' : 'scale(0.85)',
   transition: `opacity 0.4s ease ${index * 0.035}s, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) ${index * 0.035}s`,
+  willChange: 'opacity, transform',
 });
 
 const Stack = () => {
@@ -85,33 +86,15 @@ const Stack = () => {
               >
                 {col.title}
               </h3>
-              <div>
+              <div className="flex flex-wrap gap-2 md:gap-3">
                 {col.pills.map((pill) => {
                   const currentIndex = pillGlobalIndex++;
                   return (
                     <span
                       key={pill}
-                      className="inline-block transition-all duration-200 cursor-default"
+                      className="font-mono text-[0.75rem] bg-[#111118] text-[#8B8BA7] border border-[#1E1E2E] rounded-full px-3 py-1.5 md:px-4 md:py-2 transition-colors duration-200 cursor-default hover:border-[#7B5EA7] hover:text-[#C084FC] hover:shadow-[0_0_16px_rgba(123,94,167,0.2)]"
                       style={{
-                        fontFamily: "'JetBrains Mono', monospace",
-                        fontSize: '0.75rem',
-                        background: '#111118',
-                        color: '#8B8BA7',
-                        border: '1px solid #1E1E2E',
-                        borderRadius: '9999px',
-                        padding: '7px 18px',
-                        margin: '4px',
                         ...pillAnimStyle(inView, currentIndex)
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.borderColor = '#7B5EA7';
-                        e.currentTarget.style.color = '#C084FC';
-                        e.currentTarget.style.boxShadow = '0 0 16px rgba(123,94,167,0.2)';
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.borderColor = '#1E1E2E';
-                        e.currentTarget.style.color = '#8B8BA7';
-                        e.currentTarget.style.boxShadow = 'none';
                       }}
                     >
                       {pill}

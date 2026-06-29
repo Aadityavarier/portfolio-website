@@ -42,6 +42,27 @@ body {
   overflow-x: hidden;
 }
 
+@media (max-width: 767px) {
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background: 
+      radial-gradient(ellipse 70% 50% at 15% 40%, rgba(123,94,167,0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 60% at 85% 20%, rgba(155,127,212,0.08) 0%, transparent 55%),
+      #0A0A0F;
+    animation: bgShift 20s ease-in-out infinite alternate;
+    will-change: opacity;
+  }
+}
+
+@keyframes bgShift {
+  0%   { opacity: 1; }
+  50%  { opacity: 0.85; }
+  100% { opacity: 1; }
+}
+
 .section {
   scroll-snap-align: start;
   scroll-snap-stop: always;
@@ -54,6 +75,7 @@ body {
   justify-content: flex-start;
   padding: clamp(24px, 8vw, 120px);
   box-sizing: border-box;
+  will-change: transform, opacity;
 }
 
 ::-webkit-scrollbar {
