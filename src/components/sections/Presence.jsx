@@ -38,7 +38,7 @@ const OperateCard = ({ badge, title, bullets, closing, styleAnim }) => {
     <>
       <div
         onClick={() => setIsExpanded(true)}
-        className="group flex flex-col cursor-pointer transition-all duration-300 h-full"
+        className="card group flex flex-col cursor-pointer transition-all duration-300 h-full"
         style={{
           background: 'rgba(17,17,24,0.95)',
           border: '1px solid #1E1E2E',
@@ -50,12 +50,14 @@ const OperateCard = ({ badge, title, bullets, closing, styleAnim }) => {
           if (!touch) {
             e.currentTarget.style.borderColor = '#7B5EA7';
             e.currentTarget.style.transform = 'translateY(-4px)';
+            e.currentTarget.style.boxShadow = '0 8px 40px rgba(123,94,167,0.2)';
           }
         }}
         onMouseLeave={(e) => {
           if (!touch) {
             e.currentTarget.style.borderColor = '#1E1E2E';
             e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.boxShadow = 'none';
           }
         }}
       >

@@ -131,3 +131,23 @@ html {
 
 .video-bg { opacity: 0.45; }
 @media (max-width: 767px) { .video-bg { opacity: 0.35; } }
+
+@media (max-width: 480px) {
+  .hero-metadata-pill {
+    padding: 6px 14px;
+    font-size: 0.7rem;
+    line-height: 1.5;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-metadata-pill {
+    padding: 10px 24px;
+    font-size: 0.85rem;
+  }
+}
+
+.card:active {
+  transform: scale(0.98);
+  transition: transform 0.15s ease;
+}

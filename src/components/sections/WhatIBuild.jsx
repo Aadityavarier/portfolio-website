@@ -38,7 +38,7 @@ const ServiceCard = ({ icon, title, line, tags, bullets, styleAnim }) => {
     <>
       <div
         onClick={() => setIsExpanded(true)}
-        className="group flex flex-col cursor-pointer transition-all duration-300"
+        className="card group flex flex-col cursor-pointer transition-all duration-300"
         style={{
           flex: 1,
           maxWidth: mobile ? '100%' : '340px',
@@ -51,12 +51,14 @@ const ServiceCard = ({ icon, title, line, tags, bullets, styleAnim }) => {
         onMouseEnter={(e) => {
           if (!touch) {
             e.currentTarget.style.borderColor = '#7B5EA7';
-            e.currentTarget.style.boxShadow = '0 0 40px rgba(123,94,167,0.15)';
+            e.currentTarget.style.transform = 'translateY(-4px)';
+            e.currentTarget.style.boxShadow = '0 8px 40px rgba(123,94,167,0.2)';
           }
         }}
         onMouseLeave={(e) => {
           if (!touch) {
             e.currentTarget.style.borderColor = '#1E1E2E';
+            e.currentTarget.style.transform = 'translateY(0)';
             e.currentTarget.style.boxShadow = 'none';
           }
         }}

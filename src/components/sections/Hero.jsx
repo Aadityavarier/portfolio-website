@@ -34,11 +34,12 @@ const Hero = () => {
         
         {/* Eyebrow */}
         <div 
-          className="flex items-center gap-3 mb-8 transition-smooth duration-700 ease-out"
+          className="flex items-center gap-3 transition-smooth duration-700 ease-out"
           style={{
             opacity: mounted ? 1 : 0,
             transform: mounted ? 'translateY(0)' : 'translateY(20px)',
-            transitionDelay: '0ms'
+            transitionDelay: '0ms',
+            marginBottom: 'clamp(20px, 4vw, 28px)'
           }}
         >
           <span className="relative flex h-[6px] w-[6px]">
@@ -54,7 +55,10 @@ const Hero = () => {
         </div>
 
         {/* Main headline */}
-        <h1 className="font-display font-bold text-text-primary leading-[0.95] tracking-tight mb-12">
+        <h1 
+          className="font-display font-bold text-text-primary leading-[0.95] tracking-tight"
+          style={{ marginBottom: 'clamp(24px, 5vw, 40px)' }}
+        >
           <span 
             className="block transition-smooth duration-1000 cubic-bezier(0.16,1,0.3,1)"
             style={{
@@ -81,12 +85,13 @@ const Hero = () => {
 
         {/* Subline */}
         <p 
-          className="font-body font-light text-[#8B8BA7] mb-12 md:mb-8 transition-smooth duration-1000 cubic-bezier(0.16,1,0.3,1)"
+          className="font-body font-light text-[#8B8BA7] transition-smooth duration-1000 cubic-bezier(0.16,1,0.3,1)"
           style={{
             fontSize: 'clamp(1rem, 2.5vw, 1.5rem)',
             opacity: mounted ? 1 : 0,
             transform: mounted ? 'translateY(0)' : 'translateY(30px)',
-            transitionDelay: '600ms'
+            transitionDelay: '600ms',
+            marginBottom: 'clamp(16px, 3vw, 24px)'
           }}
         >
           I build products that do the work.
@@ -94,17 +99,18 @@ const Hero = () => {
 
         {/* Metadata */}
         <div 
-          className="mb-24 transition-smooth duration-1000 cubic-bezier(0.16,1,0.3,1) self-start"
+          className="transition-smooth duration-1000 cubic-bezier(0.16,1,0.3,1) self-start"
           style={{
             opacity: mounted ? 1 : 0,
             transform: mounted ? 'translateY(0)' : 'translateY(30px)',
-            transitionDelay: '800ms'
+            transitionDelay: '800ms',
+            marginBottom: 'clamp(28px, 6vw, 44px)'
           }}
         >
           <p 
-            className="font-mono text-[#C084FC] text-[0.65rem] md:text-xs leading-relaxed py-2 px-3 md:py-2.5 md:px-4 rounded-md md:rounded-lg"
+            className="hero-metadata-pill font-body font-medium text-[#E9D5FF] leading-relaxed rounded-md md:rounded-lg text-center"
             style={{
-              letterSpacing: '0.05em',
+              letterSpacing: '0.02em',
               background: 'rgba(123, 94, 167, 0.15)',
               border: '1px solid rgba(123, 94, 167, 0.3)',
               boxShadow: '0 0 20px rgba(123, 94, 167, 0.1)'
@@ -116,11 +122,12 @@ const Hero = () => {
 
         {/* Buttons */}
         <div 
-          className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto transition-smooth duration-1000 cubic-bezier(0.16,1,0.3,1)"
+          className="flex flex-col sm:flex-row w-full sm:w-auto transition-smooth duration-1000 cubic-bezier(0.16,1,0.3,1)"
           style={{
             opacity: mounted ? 1 : 0,
             transform: mounted ? 'translateY(0)' : 'translateY(30px)',
-            transitionDelay: '1000ms'
+            transitionDelay: '1000ms',
+            gap: 'clamp(12px, 2vw, 18px)'
           }}
         >
           <button

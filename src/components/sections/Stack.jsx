@@ -14,6 +14,21 @@ const pillAnimStyle = (inView, index) => ({
   willChange: 'opacity, transform',
 });
 
+const isTouchDevice = () =>
+  typeof window !== 'undefined' &&
+  ('ontouchstart' in window || navigator.maxTouchPoints > 0);
+
+const categoryBoxStyle = {
+  background: 'rgba(17,17,24,0.8)',
+  border: '1px solid #1E1E2E',
+  borderRadius: '16px',
+  padding: '2rem',
+  backdropFilter: 'blur(10px)',
+  transition: 'all 0.3s ease',
+  cursor: 'pointer',
+  height: '100%',
+};
+
 const Stack = () => {
   const [ref, inView] = useInView(0.3);
 
@@ -43,6 +58,7 @@ const Stack = () => {
   ];
 
   let pillGlobalIndex = 0;
+  const touch = isTouchDevice();
 
   return (
     <section id="stack" className="section" ref={ref}>
@@ -77,9 +93,30 @@ const Stack = () => {
         </div>
 
         {/* 3 Columns */}
-        <div className="w-full max-w-5xl grid grid-cols-1 md:grid-cols-3 gap-12">
+        <div className="w-full max-w-6xl grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
           {cols.map((col, colIdx) => (
-            <div key={col.title} style={animStyle(inView, 0.3 + (colIdx * 0.1), 30)}>
+            <div 
+              key={col.title} 
+              className="card flex flex-col"
+              style={{
+                ...categoryBoxStyle,
+                ...animStyle(inView, 0.3 + (colIdx * 0.1), 30)
+              }}
+              onMouseEnter={(e) => {
+                if (!touch) {
+                  e.currentTarget.style.borderColor = '#7B5EA7';
+                  e.currentTarget.style.boxShadow = '0 8px 40px rgba(123,94,167,0.15)';
+                  e.currentTarget.style.transform = 'translateY(-4px)';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!touch) {
+                  e.currentTarget.style.borderColor = '#1E1E2E';
+                  e.currentTarget.style.boxShadow = 'none';
+                  e.currentTarget.style.transform = 'translateY(0)';
+                }
+              }}
+            >
               <h3 
                 className="font-mono text-[#4A4A6A] mb-4 uppercase tracking-[0.12em]"
                 style={{ fontSize: '0.68rem' }}

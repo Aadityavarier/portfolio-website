@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { useInView } from '../../hooks/useInView';
 
 const animStyle = (inView, delay = 0, y = 50) => ({
@@ -7,38 +8,72 @@ const animStyle = (inView, delay = 0, y = 50) => ({
   transition: `opacity 0.9s cubic-bezier(0.16,1,0.3,1) ${delay}s, transform 0.9s cubic-bezier(0.16,1,0.3,1) ${delay}s`,
 });
 
+const isTouchDevice = () =>
+  typeof window !== 'undefined' &&
+  ('ontouchstart' in window || navigator.maxTouchPoints > 0);
+
 const cards = [
   {
+    id: 'internshield',
     badge: 'AI TOOL',
     badgeColor: '#C084FC',
     badgeBorder: 'rgba(192,132,252,0.3)',
     title: 'InternShield',
     line: 'AI-powered fake internship offer letter detector.',
     tags: ['FastAPI', 'Next.js', 'RoBERTa', 'NLP'],
-    link: '#',
+    bullets: [
+      'Three-layer ensemble: rule engine catches obvious red flags, NLP classifier scores language patterns, NER extractor validates company/role entities',
+      'Built to reduce false positives that simple keyword filters miss',
+      'Designed as a standalone API others can integrate into hiring platforms'
+    ]
   },
   {
+    id: 'clientweb',
     badge: 'FREELANCE',
     badgeColor: '#22C55E',
     badgeBorder: 'rgba(34,197,94,0.3)',
     title: 'Client Web Projects',
     line: 'Portfolio and business websites for local clients. Built, delivered, watermarked.',
     tags: ['React', 'Vite', 'Next.js', 'Tailwind', 'Supabase'],
-    link: '#',
+    bullets: [
+      'Each site includes a watermark-protected preview mode shown before final payment',
+      'Built with conversion-focused UX — WhatsApp redirect contact, masonry galleries, fast load times',
+      'Delivered end-to-end: design, development, deployment, and handoff'
+    ]
   },
   {
+    id: 'bas',
     badge: 'IN PROGRESS',
     badgeColor: '#F59E0B',
     badgeBorder: 'rgba(245,158,11,0.3)',
     title: 'Business Automation Suite',
     line: 'Multi-tenant micro-SaaS for local service businesses.',
     tags: ['Next.js', 'n8n', 'Supabase', 'WhatsApp API'],
-    link: '#',
+    bullets: [
+      'Multi-tenant architecture using Supabase Row Level Security per client',
+      'Human-in-the-loop message review queue before anything sends to customers',
+      'Currently in active development for a real client (phonics institute)'
+    ]
   }
 ];
 
 const AlsoShipped = () => {
   const [ref, inView] = useInView(0.3);
+  const [expandedCard, setExpandedCard] = useState(null);
+  const touch = isTouchDevice();
+
+  useEffect(() => {
+    document.body.style.overflow = expandedCard ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [expandedCard]);
+
+  useEffect(() => {
+    const handleKey = (e) => { if (e.key === 'Escape') setExpandedCard(null); };
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, []);
+
+  const expandedData = expandedCard ? cards.find(c => c.id === expandedCard) : null;
 
   return (
     <section id="also-shipped" className="section" ref={ref}>
@@ -76,22 +111,31 @@ const AlsoShipped = () => {
         <div className="w-full max-w-6xl grid grid-cols-1 md:grid-cols-3 gap-6">
           {cards.map((card, idx) => (
             <div
-              key={card.title}
-              className="group flex flex-col no-underline transition-all duration-300"
+              key={card.id}
+              className="card group flex flex-col no-underline"
+              onClick={() => setExpandedCard(card.id)}
               style={{
                 background: 'rgba(17,17,24,0.95)',
                 border: '1px solid #1E1E2E',
                 borderRadius: '16px',
                 padding: '2rem',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
                 ...animStyle(inView, 0.3 + (idx * 0.12), 50)
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = card.badgeColor;
-                e.currentTarget.style.transform = 'translateY(-4px)';
+                if (!touch) {
+                  e.currentTarget.style.borderColor = '#7B5EA7';
+                  e.currentTarget.style.transform = 'translateY(-4px)';
+                  e.currentTarget.style.boxShadow = '0 8px 40px rgba(123,94,167,0.2)';
+                }
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = '#1E1E2E';
-                e.currentTarget.style.transform = 'translateY(0)';
+                if (!touch) {
+                  e.currentTarget.style.borderColor = '#1E1E2E';
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.boxShadow = 'none';
+                }
               }}
             >
               <div className="mb-6">
@@ -139,6 +183,138 @@ const AlsoShipped = () => {
         </div>
 
       </div>
+
+      {createPortal(
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 100,
+            pointerEvents: expandedCard ? 'auto' : 'none',
+          }}
+        >
+          {/* Overlay */}
+          <div
+            onClick={() => setExpandedCard(null)}
+            style={{
+              position: 'absolute',
+              inset: 0,
+              background: 'rgba(0,0,0,0.85)',
+              backdropFilter: 'blur(8px)',
+              WebkitBackdropFilter: 'blur(8px)',
+              opacity: expandedCard ? 1 : 0,
+              transition: 'opacity 0.3s ease',
+            }}
+          />
+          {/* Modal content */}
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              pointerEvents: 'none',
+            }}
+          >
+            {expandedData && (
+              <div
+                style={{
+                  width: 'min(600px, 90vw)',
+                  maxHeight: '85vh',
+                  overflowY: 'auto',
+                  background: '#111118',
+                  border: '1px solid #7B5EA7',
+                  borderRadius: '16px',
+                  padding: '2.5rem',
+                  boxShadow: '0 0 80px rgba(123,94,167,0.3)',
+                  pointerEvents: expandedCard ? 'auto' : 'none',
+                  position: 'relative',
+                  opacity: expandedCard ? 1 : 0,
+                  transform: expandedCard ? 'scale(1)' : 'scale(0.95)',
+                  transition: 'opacity 0.3s ease, transform 0.3s ease',
+                }}
+              >
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setExpandedCard(null);
+                  }}
+                  style={{
+                    position: 'absolute',
+                    top: '1.25rem',
+                    right: '1.25rem',
+                    background: 'none',
+                    border: '1px solid #1E1E2E',
+                    color: '#8B8BA7',
+                    borderRadius: '50%',
+                    width: '32px',
+                    height: '32px',
+                    cursor: 'pointer',
+                    fontSize: '1.2rem',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  ×
+                </button>
+
+                <div className="mb-6">
+                  <span
+                    className="font-mono text-xs rounded-full inline-block"
+                    style={{
+                      color: expandedData.badgeColor,
+                      border: `1px solid ${expandedData.badgeBorder}`,
+                      padding: '4px 12px',
+                      letterSpacing: '0.05em'
+                    }}
+                  >
+                    {expandedData.badge}
+                  </span>
+                </div>
+
+                <h3 className="font-display text-2xl font-semibold text-text-primary mb-4">
+                  {expandedData.title}
+                </h3>
+
+                <p className="font-body text-text-secondary text-sm leading-relaxed mb-6">
+                  {expandedData.line}
+                </p>
+
+                <div className="flex flex-wrap gap-2 mb-8">
+                  {expandedData.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="font-mono text-[#8B8BA7] text-[0.72rem] bg-[#111118] border border-[#1E1E2E] px-3 py-1 rounded-full"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+
+                <div>
+                  <span className="font-mono text-[#7B5EA7] text-[0.75rem] uppercase tracking-widest block mb-4">
+                    MORE DETAIL
+                  </span>
+                  <ul className="space-y-3">
+                    {expandedData.bullets.map((bullet, i) => (
+                      <li
+                        key={i}
+                        className="font-body text-[#8B8BA7] text-sm leading-relaxed flex items-start gap-2"
+                      >
+                        <span className="text-[#7B5EA7] mt-1.5 text-[6px]">●</span>
+                        <span>{bullet}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>,
+        document.body
+      )}
     </section>
   );
 };
