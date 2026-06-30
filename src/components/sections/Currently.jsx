@@ -34,7 +34,7 @@ const Currently = () => {
   const [ref, inView] = useInView(0.3);
 
   return (
-    <section id="lab" className="section" ref={ref}>
+    <section id="lab" className="section" aria-label="Current Projects in the Lab" ref={ref}>
       {/* Overlay */}
       <div
         style={{

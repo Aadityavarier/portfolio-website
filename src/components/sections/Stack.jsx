@@ -61,7 +61,7 @@ const Stack = () => {
   const touch = isTouchDevice();
 
   return (
-    <section id="stack" className="section" ref={ref}>
+    <section id="stack" className="section" aria-label="Technology Stack" ref={ref}>
       {/* Overlay */}
       <div
         style={{

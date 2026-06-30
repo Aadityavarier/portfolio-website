@@ -26,7 +26,7 @@ const TradingBot = () => {
   }, [inView]);
 
   return (
-    <section id="trading-bot" className="section" ref={ref}>
+    <section id="trading-bot" className="section" aria-label="Trading Bot Project" ref={ref}>
       {/* Overlay */}
       <div
         style={{
@@ -58,7 +58,7 @@ const TradingBot = () => {
             transition: 'opacity 1s cubic-bezier(0.16,1,0.3,1) 0.2s, transform 1s cubic-bezier(0.16,1,0.3,1) 0.2s',
           }}
         >
-          <svg viewBox="0 0 600 300" className="w-full h-auto drop-shadow-xl">
+          <svg viewBox="0 0 600 300" className="w-full h-auto drop-shadow-xl" aria-hidden="true">
             <defs>
               <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" stopColor="rgba(123,94,167,0.6)" />

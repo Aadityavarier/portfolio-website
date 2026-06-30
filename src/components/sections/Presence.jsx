@@ -222,7 +222,7 @@ const Presence = () => {
   const [ref, inView] = useInView(0.3);
 
   return (
-    <section id="how-i-operate" className="section" ref={ref}>
+    <section id="how-i-operate" className="section" aria-label="How I Operate" ref={ref}>
       {/* Overlay */}
       <div
         style={{

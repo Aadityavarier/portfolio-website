@@ -15,6 +15,7 @@ function App() {
   return (
     <div className="relative w-full h-full">
       <video
+          aria-hidden="true"
           autoPlay
           loop
           muted

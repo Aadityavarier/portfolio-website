@@ -11,7 +11,7 @@ const HotelManager = () => {
   const [ref, inView] = useInView(0.3);
 
   return (
-    <section id="hotel-manager" className="section" ref={ref}>
+    <section id="hotel-manager" className="section" aria-label="Hotel Management Project" ref={ref}>
       {/* Overlay */}
       <div
         style={{

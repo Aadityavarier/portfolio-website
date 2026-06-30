@@ -77,7 +77,7 @@ const AlsoShipped = () => {
   const expandedData = expandedCard ? cards.find(c => c.id === expandedCard) : null;
 
   return (
-    <section id="also-shipped" className="section" ref={ref}>
+    <section id="also-shipped" className="section" aria-label="Other Projects" ref={ref}>
       {/* Overlay */}
       <div
         style={{

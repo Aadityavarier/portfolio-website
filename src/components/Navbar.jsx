@@ -32,6 +32,7 @@ const Navbar = () => {
     <>
       <nav
         className="fixed top-0 left-0 right-0 z-[100] flex items-center justify-between transition-all duration-500"
+        aria-label="Main navigation"
         style={{
           padding: '24px clamp(24px, 8vw, 120px)',
           backgroundColor: 'rgba(10, 10, 15, 0.95)',

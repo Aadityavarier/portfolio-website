@@ -20,6 +20,7 @@ const Hero = () => {
     <section 
       id="hero" 
       className="section relative"
+      aria-label="Introduction"
       style={{
         position: 'relative',
         minHeight: '100vh',
