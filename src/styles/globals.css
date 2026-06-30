@@ -129,5 +129,5 @@ html {
   }
 }
 
-.video-bg { opacity: 0.28; }
-@media (max-width: 767px) { .video-bg { opacity: 0.2; } }
+.video-bg { opacity: 0.45; }
+@media (max-width: 767px) { .video-bg { opacity: 0.35; } }

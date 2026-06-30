@@ -12,19 +12,9 @@ import Contact from './components/sections/Contact';
 import ScrollDots from './components/ScrollDots';
 
 function App() {
-  const [isMobile, setIsMobile] = useState(true); // Default true for safety
-
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile(); // Run once on mount
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
   return (
     <div className="relative w-full h-full">
-      {!isMobile && (
-        <video
+      <video
           autoPlay
           loop
           muted
@@ -43,8 +33,7 @@ function App() {
           }}
         >
           <source src="/hero-bg.mp4" type="video/mp4" />
-        </video>
-      )}
+      </video>
       
       <Navbar />
       <ScrollDots />
