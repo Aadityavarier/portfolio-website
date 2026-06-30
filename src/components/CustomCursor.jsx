@@ -35,6 +35,8 @@ const CustomCursor = () => {
 
   const isInteractive = hoverState === 'interactive';
   const isProject = hoverState === 'project';
+  const isExpandable = hoverState === 'expandable';
+  const isEnlarged = isInteractive || isProject || isExpandable;
 
   return (
     <>
@@ -43,11 +45,11 @@ const CustomCursor = () => {
         ref={outerRef}
         className="fixed top-0 left-0 pointer-events-none z-[9999] rounded-full transition-all duration-200"
         style={{
-          width: isInteractive || isProject ? 48 : 32,
-          height: isInteractive || isProject ? 48 : 32,
-          border: `1.5px solid rgba(155, 127, 212, ${isInteractive || isProject ? 0.8 : 0.6})`,
+          width: isEnlarged ? 40 : 32,
+          height: isEnlarged ? 40 : 32,
+          border: `1.5px solid rgba(155, 127, 212, ${isEnlarged ? 0.8 : 0.6})`,
           backgroundColor:
-            isInteractive || isProject ? 'rgba(123, 94, 167, 0.1)' : 'transparent',
+            isEnlarged ? 'rgba(123, 94, 167, 0.1)' : 'transparent',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -59,6 +61,14 @@ const CustomCursor = () => {
             style={{ fontSize: '8px', letterSpacing: '0.05em' }}
           >
             VIEW
+          </span>
+        )}
+        {isExpandable && (
+          <span
+            className="font-mono text-[#C084FC]"
+            style={{ fontSize: '10px' }}
+          >
+            +
           </span>
         )}
       </div>

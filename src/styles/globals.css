@@ -147,7 +147,32 @@ html {
   }
 }
 
-.card:active {
+.expandable-card:active {
+  transform: scale(0.97);
+  transition: transform 0.15s ease;
+}
+
+@media (max-width: 768px) {
+  .card-expand-icon {
+    opacity: 0.6 !important;
+  }
+}
+
+@media (max-height: 700px) {
+  .hero-name {
+    font-size: clamp(3.25rem, 9vw, 6.5rem) !important;
+  }
+}
+
+@media (max-width: 380px) {
+  .hero-button {
+    padding-left: 18px !important;
+    padding-right: 18px !important;
+    font-size: 0.85rem !important;
+  }
+}
+
+.stack-category-box:active {
   transform: scale(0.98);
   transition: transform 0.15s ease;
 }

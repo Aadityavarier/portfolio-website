@@ -12,8 +12,8 @@ const Contact = () => {
 
   const links = [
     { label: 'GitHub', url: 'https://github.com/aadityavarier' },
-    { label: 'LinkedIn', url: 'https://linkedin.com/in/aadityavarier' },
-    { label: 'Email', url: 'mailto:aadityavarier@gmail.com' }
+    { label: 'LinkedIn', url: 'https://linkedin.com/in/aaditya-varier' },
+    { label: 'Email', url: 'mailto:aadityav1703@gmail.com' }
   ];
 
   const githubIcon = (

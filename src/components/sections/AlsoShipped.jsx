@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { useInView } from '../../hooks/useInView';
+import ExpandIcon from '../ui/ExpandIcon';
 
 const animStyle = (inView, delay = 0, y = 50) => ({
   opacity: inView ? 1 : 0,
@@ -15,7 +16,7 @@ const isTouchDevice = () =>
 const cards = [
   {
     id: 'internshield',
-    badge: 'AI TOOL',
+    badge: 'Detection Engine',
     badgeColor: '#C084FC',
     badgeBorder: 'rgba(192,132,252,0.3)',
     title: 'InternShield',
@@ -29,7 +30,7 @@ const cards = [
   },
   {
     id: 'clientweb',
-    badge: 'FREELANCE',
+    badge: 'Client Freelancing',
     badgeColor: '#22C55E',
     badgeBorder: 'rgba(34,197,94,0.3)',
     title: 'Client Web Projects',
@@ -108,11 +109,11 @@ const AlsoShipped = () => {
         </div>
 
         {/* Cards Grid */}
-        <div className="w-full max-w-6xl grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="w-full max-w-6xl grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
           {cards.map((card, idx) => (
             <div
               key={card.id}
-              className="card group flex flex-col no-underline"
+              className="card expandable-card group flex flex-col relative"
               onClick={() => setExpandedCard(card.id)}
               style={{
                 background: 'rgba(17,17,24,0.95)',
@@ -121,6 +122,8 @@ const AlsoShipped = () => {
                 padding: '2rem',
                 cursor: 'pointer',
                 transition: 'all 0.3s ease',
+                height: '100%',
+                minHeight: '220px',
                 ...animStyle(inView, 0.3 + (idx * 0.12), 50)
               }}
               onMouseEnter={(e) => {
@@ -128,6 +131,12 @@ const AlsoShipped = () => {
                   e.currentTarget.style.borderColor = '#7B5EA7';
                   e.currentTarget.style.transform = 'translateY(-4px)';
                   e.currentTarget.style.boxShadow = '0 8px 40px rgba(123,94,167,0.2)';
+                  const icon = e.currentTarget.querySelector('.card-expand-icon');
+                  if (icon) {
+                    icon.style.opacity = '1';
+                    icon.style.borderColor = '#7B5EA7';
+                    icon.style.transform = 'translate(2px, -2px)';
+                  }
                 }
               }}
               onMouseLeave={(e) => {
@@ -135,10 +144,17 @@ const AlsoShipped = () => {
                   e.currentTarget.style.borderColor = '#1E1E2E';
                   e.currentTarget.style.transform = 'translateY(0)';
                   e.currentTarget.style.boxShadow = 'none';
+                  const icon = e.currentTarget.querySelector('.card-expand-icon');
+                  if (icon) {
+                    icon.style.opacity = '0.5';
+                    icon.style.borderColor = '#1E1E2E';
+                    icon.style.transform = 'translate(0, 0)';
+                  }
                 }
               }}
             >
-              <div className="mb-6">
+              <ExpandIcon />
+              <div style={{ marginBottom: '1rem', alignSelf: 'flex-start' }}>
                 <span
                   className="font-mono text-xs rounded-full inline-block"
                   style={{
@@ -152,32 +168,15 @@ const AlsoShipped = () => {
                 </span>
               </div>
 
-              <h3 className="font-display font-semibold text-text-primary text-xl mb-3 group-hover:text-accent-glow transition-colors duration-300">
+              <h3 className="font-display font-semibold text-text-primary text-xl group-hover:text-accent-glow transition-colors duration-300" style={{ marginBottom: '0.75rem' }}>
                 {card.title}
               </h3>
               
-              <p className="font-body text-text-secondary text-sm leading-relaxed flex-1 mb-8">
+              <p className="font-body text-text-secondary text-sm leading-relaxed" style={{ flexGrow: 1 }}>
                 {card.line}
               </p>
 
-              <div className="flex flex-wrap gap-2 mt-auto">
-                {card.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="font-mono"
-                    style={{
-                      border: '1px solid #1E1E2E',
-                      borderRadius: '9999px',
-                      padding: '4px 10px',
-                      background: '#111118',
-                      color: '#8B8BA7',
-                      fontSize: '0.65rem'
-                    }}
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
+
             </div>
           ))}
         </div>
@@ -226,7 +225,7 @@ const AlsoShipped = () => {
                   background: '#111118',
                   border: '1px solid #7B5EA7',
                   borderRadius: '16px',
-                  padding: '2.5rem',
+                  padding: '2.75rem',
                   boxShadow: '0 0 80px rgba(123,94,167,0.3)',
                   pointerEvents: expandedCard ? 'auto' : 'none',
                   position: 'relative',
@@ -260,7 +259,7 @@ const AlsoShipped = () => {
                   ×
                 </button>
 
-                <div className="mb-6">
+                <div style={{ marginBottom: '1.5rem' }}>
                   <span
                     className="font-mono text-xs rounded-full inline-block"
                     style={{
@@ -274,15 +273,22 @@ const AlsoShipped = () => {
                   </span>
                 </div>
 
-                <h3 className="font-display text-2xl font-semibold text-text-primary mb-4">
+                <h3 className="font-display text-2xl font-semibold text-text-primary" style={{ marginBottom: '1rem' }}>
                   {expandedData.title}
                 </h3>
 
-                <p className="font-body text-text-secondary text-sm leading-relaxed mb-6">
+                <p className="font-body text-text-secondary text-sm" style={{ marginBottom: '1.25rem', lineHeight: 1.6 }}>
                   {expandedData.line}
                 </p>
 
-                <div className="flex flex-wrap gap-2 mb-8">
+                <div style={{
+                  marginBottom: '1.75rem',
+                  paddingBottom: '1.75rem',
+                  borderBottom: '1px solid #1E1E2E',
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  gap: '8px',
+                }}>
                   {expandedData.tags.map((tag) => (
                     <span
                       key={tag}
@@ -294,16 +300,17 @@ const AlsoShipped = () => {
                 </div>
 
                 <div>
-                  <span className="font-mono text-[#7B5EA7] text-[0.75rem] uppercase tracking-widest block mb-4">
+                  <span className="font-mono text-[#7B5EA7] uppercase tracking-widest block" style={{ marginBottom: '1rem', fontSize: '0.7rem', letterSpacing: '0.1em' }}>
                     MORE DETAIL
                   </span>
-                  <ul className="space-y-3">
+                  <ul style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
                     {expandedData.bullets.map((bullet, i) => (
                       <li
                         key={i}
-                        className="font-body text-[#8B8BA7] text-sm leading-relaxed flex items-start gap-2"
+                        className="font-body text-[#8B8BA7]"
+                        style={{ display: 'flex', alignItems: 'flex-start', gap: '0.6rem', lineHeight: 1.6, fontSize: '0.88rem' }}
                       >
-                        <span className="text-[#7B5EA7] mt-1.5 text-[6px]">●</span>
+                        <span className="text-[#7B5EA7]" style={{ marginTop: '0.45rem', fontSize: '6px' }}>●</span>
                         <span>{bullet}</span>
                       </li>
                     ))}

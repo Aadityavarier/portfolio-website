@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { useInView } from '../../hooks/useInView';
+import ExpandIcon from '../ui/ExpandIcon';
 
 const animStyle = (inView, delay = 0, y = 50) => ({
   opacity: inView ? 1 : 0,
@@ -12,7 +13,7 @@ const isTouchDevice = () =>
   typeof window !== 'undefined' &&
   ('ontouchstart' in window || navigator.maxTouchPoints > 0);
 
-const OperateCard = ({ badge, title, bullets, closing, styleAnim }) => {
+const OperateCard = ({ badge, title, tagline, bullets, closing, styleAnim }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const touch = isTouchDevice();
   const mobile = typeof window !== 'undefined' && window.innerWidth < 768;
@@ -38,7 +39,7 @@ const OperateCard = ({ badge, title, bullets, closing, styleAnim }) => {
     <>
       <div
         onClick={() => setIsExpanded(true)}
-        className="card group flex flex-col cursor-pointer transition-all duration-300 h-full"
+        className="card expandable-card group flex flex-col cursor-pointer transition-all duration-300 h-full relative"
         style={{
           background: 'rgba(17,17,24,0.95)',
           border: '1px solid #1E1E2E',
@@ -51,6 +52,12 @@ const OperateCard = ({ badge, title, bullets, closing, styleAnim }) => {
             e.currentTarget.style.borderColor = '#7B5EA7';
             e.currentTarget.style.transform = 'translateY(-4px)';
             e.currentTarget.style.boxShadow = '0 8px 40px rgba(123,94,167,0.2)';
+            const icon = e.currentTarget.querySelector('.card-expand-icon');
+            if (icon) {
+              icon.style.opacity = '1';
+              icon.style.borderColor = '#7B5EA7';
+              icon.style.transform = 'translate(2px, -2px)';
+            }
           }
         }}
         onMouseLeave={(e) => {
@@ -58,29 +65,32 @@ const OperateCard = ({ badge, title, bullets, closing, styleAnim }) => {
             e.currentTarget.style.borderColor = '#1E1E2E';
             e.currentTarget.style.transform = 'translateY(0)';
             e.currentTarget.style.boxShadow = 'none';
+            const icon = e.currentTarget.querySelector('.card-expand-icon');
+            if (icon) {
+              icon.style.opacity = '0.5';
+              icon.style.borderColor = '#1E1E2E';
+              icon.style.transform = 'translate(0, 0)';
+            }
           }
         }}
       >
-        <div className="mb-4">
+        <ExpandIcon />
+        <div style={{ marginBottom: '0.75rem' }}>
           <span className="font-mono text-[#7B5EA7]" style={{ fontSize: '0.68rem' }}>
             {badge}
           </span>
         </div>
-        <h3 className="font-display font-semibold text-text-primary text-[1.1rem] mb-4">
+        <h3 className="font-display font-semibold text-text-primary text-[1.1rem]" style={{ marginBottom: '0.85rem' }}>
           {title}
         </h3>
         
-        <ul className="space-y-2.5 mb-6 flex-grow">
-          {bullets.map((bullet, i) => (
-            <li key={i} className="font-body text-[#8B8BA7] text-sm leading-relaxed flex items-start gap-2">
-              <span className="text-[#7B5EA7] mt-1.5 text-[6px]">●</span>
-              <span>{bullet}</span>
-            </li>
-          ))}
-        </ul>
-
-        <p className="font-mono text-[#4A4A6A] italic mt-auto pt-4 border-t border-[#1E1E2E]" style={{ fontSize: '0.72rem' }}>
-          {closing}
+        <p style={{
+          fontFamily: 'Inter, sans-serif',
+          fontSize: '0.9rem',
+          color: '#8B8BA7',
+          lineHeight: 1.6,
+        }}>
+          {tagline}
         </p>
       </div>
 
@@ -161,20 +171,20 @@ const OperateCard = ({ badge, title, bullets, closing, styleAnim }) => {
                 ×
               </button>
 
-              <div className="mb-4">
+              <div style={{ marginBottom: '0.75rem' }}>
                 <span className="font-mono text-[#7B5EA7] text-[0.85rem]">
                   {badge}
                 </span>
               </div>
 
-              <h3 className="font-display text-3xl font-semibold text-text-primary mb-6">
+              <h3 className="font-display text-3xl font-semibold text-text-primary" style={{ marginBottom: '1.25rem' }}>
                 {title}
               </h3>
 
-              <ul className="space-y-4 mb-8">
+              <ul style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem', marginBottom: '1.5rem' }}>
                 {bullets.map((bullet, i) => (
-                  <li key={i} className="font-body text-[#8B8BA7] text-[1rem] leading-relaxed flex items-start gap-3">
-                    <span className="text-[#7B5EA7] mt-2 text-[8px]">●</span>
+                  <li key={i} className="font-body text-[#8B8BA7]" style={{ display: 'flex', alignItems: 'flex-start', gap: '0.6rem', lineHeight: 1.6, fontSize: '1rem' }}>
+                    <span className="text-[#7B5EA7]" style={{ marginTop: '0.5rem', fontSize: '8px' }}>●</span>
                     <span>{bullet}</span>
                   </li>
                 ))}
@@ -228,7 +238,7 @@ const Presence = () => {
           </h2>
           <p 
             className="font-body font-light text-[#8B8BA7]"
-            style={{ fontSize: '1.1rem', ...animStyle(inView, 0.25, 40) }}
+            style={{ fontSize: '1.1rem', marginBottom: 'clamp(40px, 6vw, 64px)', ...animStyle(inView, 0.25, 40) }}
           >
             Code is one output. This is the rest.
           </p>
@@ -240,6 +250,7 @@ const Presence = () => {
           <OperateCard
             badge="Google Student Ambassador 2025–26"
             title="Google Gemini Campus Ambassador"
+            tagline="Running AI-powered events and campus campaigns for Google."
             bullets={[
               'Organized "Battle of the Bands: AI Music Night" — 100% submission rate',
               'Built end-to-end AI workflow using Gemini Pro, Lyria, Nano Banana',
@@ -253,6 +264,7 @@ const Presence = () => {
           <OperateCard
             badge="Rotaract Club Member"
             title="Community Service"
+            tagline="Blood drives, workshops, and showing up for people who need it."
             bullets={[
               'Hosted blood donation campaigns',
               'Conducted self-defense workshops at Rotary Adivasi School',
@@ -266,6 +278,7 @@ const Presence = () => {
           <OperateCard
             badge="SHAIDS · Students Hive of AI & Data Science"
             title="Tech & Sports Teams"
+            tagline="Helping run hackathons and tech events on campus."
             bullets={[
               'Volunteered in organizing Hack-Hive hackathon',
               'Supported Technitude tech event',

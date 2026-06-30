@@ -17,7 +17,22 @@ const Hero = () => {
   };
 
   return (
-    <section id="hero" className="section relative min-h-screen">
+    <section 
+      id="hero" 
+      className="section relative"
+      style={{
+        position: 'relative',
+        minHeight: '100vh',
+        height: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        paddingTop: 'clamp(70px, 9vh, 90px)',
+        paddingBottom: 'clamp(60px, 8vh, 80px)',
+        overflow: 'hidden',
+        boxSizing: 'border-box',
+      }}
+    >
       {/* Overlay */}
       <div
         style={{
@@ -30,7 +45,7 @@ const Hero = () => {
       />
       
       {/* Content wrapper */}
-      <div className="relative z-1 w-full flex flex-col justify-center max-w-7xl mx-auto">
+      <div className="relative z-1 w-full flex flex-col justify-center max-w-7xl mx-auto" style={{ paddingTop: '80px', paddingBottom: '40px' }}>
         
         {/* Eyebrow */}
         <div 
@@ -39,30 +54,32 @@ const Hero = () => {
             opacity: mounted ? 1 : 0,
             transform: mounted ? 'translateY(0)' : 'translateY(20px)',
             transitionDelay: '0ms',
-            marginBottom: 'clamp(20px, 4vw, 28px)'
+            marginBottom: 'clamp(12px, 2vw, 18px)'
           }}
         >
           <span className="relative flex h-[6px] w-[6px]">
-            <span className="pulse-green absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75" />
+            <span className="pulse-green absolute inline-flex h-full w-full rounded-full bg-[#22C55E] opacity-75" />
             <span className="relative inline-flex h-[6px] w-[6px] rounded-full bg-[#22C55E]" />
           </span>
           <span 
-            className="font-mono uppercase text-[#7B5EA7]"
+            className="font-mono uppercase text-[#E9D5FF]"
             style={{ fontSize: '0.75rem', letterSpacing: '0.1em' }}
           >
             AVAILABLE FOR PROJECTS
           </span>
         </div>
 
-        {/* Main headline */}
         <h1 
-          className="font-display font-bold text-text-primary leading-[0.95] tracking-tight"
-          style={{ marginBottom: 'clamp(24px, 5vw, 40px)' }}
+          className="hero-name font-display font-bold text-text-primary tracking-tight"
+          style={{
+            fontSize: 'clamp(4rem, 10vw, 8.5rem)',
+            lineHeight: 0.95,
+            marginBottom: 'clamp(14px, 2.5vw, 22px)'
+          }}
         >
           <span 
             className="block transition-smooth duration-1000 cubic-bezier(0.16,1,0.3,1)"
             style={{
-              fontSize: 'clamp(5rem, 12vw, 10rem)',
               opacity: mounted ? 1 : 0,
               transform: mounted ? 'translateX(0)' : 'translateX(-60px)',
               transitionDelay: '200ms'
@@ -73,7 +90,6 @@ const Hero = () => {
           <span 
             className="block transition-smooth duration-1000 cubic-bezier(0.16,1,0.3,1)"
             style={{
-              fontSize: 'clamp(5rem, 12vw, 10rem)',
               opacity: mounted ? 1 : 0,
               transform: mounted ? 'translateX(0)' : 'translateX(-60px)',
               transitionDelay: '380ms'
@@ -91,7 +107,7 @@ const Hero = () => {
             opacity: mounted ? 1 : 0,
             transform: mounted ? 'translateY(0)' : 'translateY(30px)',
             transitionDelay: '600ms',
-            marginBottom: 'clamp(16px, 3vw, 24px)'
+            marginBottom: 'clamp(8px, 1.8vw, 14px)'
           }}
         >
           I build products that do the work.
@@ -104,7 +120,7 @@ const Hero = () => {
             opacity: mounted ? 1 : 0,
             transform: mounted ? 'translateY(0)' : 'translateY(30px)',
             transitionDelay: '800ms',
-            marginBottom: 'clamp(28px, 6vw, 44px)'
+            marginBottom: 'clamp(16px, 3vw, 26px)'
           }}
         >
           <p 
@@ -120,19 +136,21 @@ const Hero = () => {
           </p>
         </div>
 
-        {/* Buttons */}
         <div 
-          className="flex flex-col sm:flex-row w-full sm:w-auto transition-smooth duration-1000 cubic-bezier(0.16,1,0.3,1)"
+          className="w-full sm:w-auto transition-smooth duration-1000 cubic-bezier(0.16,1,0.3,1)"
           style={{
             opacity: mounted ? 1 : 0,
             transform: mounted ? 'translateY(0)' : 'translateY(30px)',
             transitionDelay: '1000ms',
-            gap: 'clamp(12px, 2vw, 18px)'
+            display: 'flex',
+            flexDirection: 'row',
+            gap: 'clamp(10px, 2vw, 18px)',
+            flexWrap: 'nowrap',
           }}
         >
           <button
             onClick={() => scrollTo('hotel-manager')}
-            className="w-full sm:w-auto font-body font-medium transition-transform duration-200 hover:scale-105 active:scale-95"
+            className="hero-button w-full sm:w-auto font-body font-medium transition-transform duration-200 hover:scale-105 active:scale-95"
             style={{
               background: '#7B5EA7',
               color: '#F8F8FF',
@@ -145,7 +163,7 @@ const Hero = () => {
           
           <button
             onClick={() => scrollTo('contact')}
-            className="w-full sm:w-auto font-body font-medium transition-transform duration-200 hover:scale-105 active:scale-95"
+            className="hero-button w-full sm:w-auto font-body font-medium transition-transform duration-200 hover:scale-105 active:scale-95"
             style={{
               background: 'transparent',
               color: '#8B8BA7',
@@ -162,8 +180,19 @@ const Hero = () => {
 
       {/* Scroll indicator */}
       <div 
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 transition-opacity duration-1000 delay-[1200ms]"
-        style={{ opacity: mounted ? 1 : 0, zIndex: 1 }}
+        className="transition-opacity duration-1000 delay-[1200ms]"
+        style={{
+          opacity: mounted ? 1 : 0,
+          position: 'absolute',
+          bottom: '1.5rem',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '8px',
+          zIndex: 10,
+        }}
       >
         <div
           className="w-[1px] h-[60px] pulse-scroll"

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { useInView } from '../../hooks/useInView';
+import ExpandIcon from '../ui/ExpandIcon';
 
 const animStyle = (inView, delay = 0, y = 50) => ({
   opacity: inView ? 1 : 0,
@@ -38,7 +39,7 @@ const ServiceCard = ({ icon, title, line, tags, bullets, styleAnim }) => {
     <>
       <div
         onClick={() => setIsExpanded(true)}
-        className="card group flex flex-col cursor-pointer transition-all duration-300"
+        className="card expandable-card group flex flex-col cursor-pointer transition-all duration-300 relative"
         style={{
           flex: 1,
           maxWidth: mobile ? '100%' : '340px',
@@ -53,6 +54,12 @@ const ServiceCard = ({ icon, title, line, tags, bullets, styleAnim }) => {
             e.currentTarget.style.borderColor = '#7B5EA7';
             e.currentTarget.style.transform = 'translateY(-4px)';
             e.currentTarget.style.boxShadow = '0 8px 40px rgba(123,94,167,0.2)';
+            const icon = e.currentTarget.querySelector('.card-expand-icon');
+            if (icon) {
+              icon.style.opacity = '1';
+              icon.style.borderColor = '#7B5EA7';
+              icon.style.transform = 'translate(2px, -2px)';
+            }
           }
         }}
         onMouseLeave={(e) => {
@@ -60,9 +67,16 @@ const ServiceCard = ({ icon, title, line, tags, bullets, styleAnim }) => {
             e.currentTarget.style.borderColor = '#1E1E2E';
             e.currentTarget.style.transform = 'translateY(0)';
             e.currentTarget.style.boxShadow = 'none';
+            const icon = e.currentTarget.querySelector('.card-expand-icon');
+            if (icon) {
+              icon.style.opacity = '0.5';
+              icon.style.borderColor = '#1E1E2E';
+              icon.style.transform = 'translate(0, 0)';
+            }
           }
         }}
       >
+        <ExpandIcon />
         <div className="mb-6 flex items-center justify-center w-10 h-10">
           {icon}
         </div>
@@ -72,16 +86,7 @@ const ServiceCard = ({ icon, title, line, tags, bullets, styleAnim }) => {
         <p className="font-body text-text-secondary text-[0.85rem] mb-6 flex-1">
           {line}
         </p>
-        <div className="flex flex-wrap gap-2 mt-auto">
-          {tags.map((tag) => (
-            <span
-              key={tag}
-              className="font-mono text-[#4A4A6A] text-[0.7rem]"
-            >
-              {tag}{tag !== tags[tags.length - 1] && ' ·'}
-            </span>
-          ))}
-        </div>
+
       </div>
 
       {createPortal(
@@ -127,7 +132,7 @@ const ServiceCard = ({ icon, title, line, tags, bullets, styleAnim }) => {
                 background: '#111118',
                 border: '1px solid #7B5EA7',
                 borderRadius: '16px',
-                padding: '2.5rem',
+                padding: '2.75rem',
                 boxShadow: '0 0 80px rgba(123,94,167,0.3)',
                 pointerEvents: isExpanded ? 'auto' : 'none',
                 position: 'relative',
@@ -161,19 +166,26 @@ const ServiceCard = ({ icon, title, line, tags, bullets, styleAnim }) => {
                 ×
               </button>
 
-              <div className="mb-6 w-16 h-16 flex items-center justify-center">
+              <div style={{ marginBottom: '1.5rem' }} className="w-16 h-16 flex items-center justify-center">
                 {icon}
               </div>
 
-              <h3 className="font-display text-2xl font-semibold text-text-primary mb-4">
+              <h3 className="font-display text-2xl font-semibold text-text-primary" style={{ marginBottom: '1rem' }}>
                 {title}
               </h3>
 
-              <p className="font-body text-text-secondary text-sm leading-relaxed mb-6">
+              <p className="font-body text-text-secondary text-sm" style={{ marginBottom: '1.25rem', lineHeight: 1.6 }}>
                 {line}
               </p>
 
-              <div className="flex flex-wrap gap-2 mb-8">
+              <div style={{
+                marginBottom: '1.75rem',
+                paddingBottom: '1.75rem',
+                borderBottom: '1px solid #1E1E2E',
+                display: 'flex',
+                flexWrap: 'wrap',
+                gap: '8px',
+              }}>
                 {tags.map((tag) => (
                   <span
                     key={tag}
@@ -185,16 +197,14 @@ const ServiceCard = ({ icon, title, line, tags, bullets, styleAnim }) => {
               </div>
 
               <div>
-                <span className="font-mono text-[#7B5EA7] text-[0.75rem] uppercase tracking-widest block mb-4">
-                  HOW I APPROACH THIS
-                </span>
-                <ul className="space-y-3">
+                <ul style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
                   {bullets.map((bullet, i) => (
                     <li
                       key={i}
-                      className="font-body text-[#8B8BA7] text-sm leading-relaxed flex items-start gap-2"
+                      className="font-body text-[#8B8BA7]"
+                      style={{ display: 'flex', alignItems: 'flex-start', gap: '0.6rem', lineHeight: 1.6, fontSize: '0.88rem' }}
                     >
-                      <span className="text-[#7B5EA7] mt-1.5 text-[6px]">●</span>
+                      <span className="text-[#7B5EA7]" style={{ marginTop: '0.45rem', fontSize: '6px' }}>●</span>
                       <span>{bullet}</span>
                     </li>
                   ))}

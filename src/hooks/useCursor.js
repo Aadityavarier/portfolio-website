@@ -49,6 +49,8 @@ export const useCursor = () => {
       const el = e.target.closest('[data-cursor]');
       if (el) {
         setHoverState(el.dataset.cursor);
+      } else if (e.target.closest('.expandable-card')) {
+        setHoverState('expandable');
       } else if (
         e.target.closest('a, button, [role="button"], input, textarea, select, label')
       ) {
