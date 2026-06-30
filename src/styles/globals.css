@@ -152,9 +152,14 @@ html {
   transition: transform 0.15s ease;
 }
 
-@media (max-width: 768px) {
+.card-expand-icon {
+  opacity: 0.6;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
   .card-expand-icon {
-    opacity: 0.6 !important;
+    opacity: 0;
   }
 }
 

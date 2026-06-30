@@ -51,36 +51,54 @@ const ServiceCard = ({ icon, title, line, tags, bullets, styleAnim }) => {
         }}
         onMouseEnter={(e) => {
           if (!touch) {
+            const title = e.currentTarget.querySelector('.card-title');
+            if (title) title.style.color = '#C084FC';
+            
+            const icon = e.currentTarget.querySelector('.card-icon');
+            if (icon) icon.style.filter = 'brightness(1.3)';
+            
             e.currentTarget.style.borderColor = '#7B5EA7';
             e.currentTarget.style.transform = 'translateY(-4px)';
             e.currentTarget.style.boxShadow = '0 8px 40px rgba(123,94,167,0.2)';
-            const icon = e.currentTarget.querySelector('.card-expand-icon');
-            if (icon) {
-              icon.style.opacity = '1';
-              icon.style.borderColor = '#7B5EA7';
-              icon.style.transform = 'translate(2px, -2px)';
+            
+            const arrow = e.currentTarget.querySelector('.card-expand-icon');
+            if (arrow) {
+              arrow.style.opacity = '1';
+              arrow.style.transform = 'translate(2px, -2px)';
             }
           }
         }}
         onMouseLeave={(e) => {
           if (!touch) {
+            const title = e.currentTarget.querySelector('.card-title');
+            if (title) title.style.color = '#F8F8FF';
+            
+            const icon = e.currentTarget.querySelector('.card-icon');
+            if (icon) icon.style.filter = 'brightness(1)';
+            
             e.currentTarget.style.borderColor = '#1E1E2E';
             e.currentTarget.style.transform = 'translateY(0)';
             e.currentTarget.style.boxShadow = 'none';
-            const icon = e.currentTarget.querySelector('.card-expand-icon');
-            if (icon) {
-              icon.style.opacity = '0.5';
-              icon.style.borderColor = '#1E1E2E';
-              icon.style.transform = 'translate(0, 0)';
+            
+            const arrow = e.currentTarget.querySelector('.card-expand-icon');
+            if (arrow) {
+              arrow.style.opacity = '0';
+              arrow.style.transform = 'translate(0, 0)';
             }
           }
         }}
       >
         <ExpandIcon />
-        <div className="mb-6 flex items-center justify-center w-10 h-10">
+        <div 
+          className="card-icon mb-6 flex items-center justify-center w-10 h-10"
+          style={{ transition: 'filter 0.3s ease' }}
+        >
           {icon}
         </div>
-        <h3 className="font-display font-semibold text-text-primary text-[1.1rem] mb-2">
+        <h3 
+          className="card-title font-display font-semibold text-text-primary text-[1.1rem] mb-2"
+          style={{ transition: 'color 0.3s ease' }}
+        >
           {title}
         </h3>
         <p className="font-body text-text-secondary text-[0.85rem] mb-6 flex-1">

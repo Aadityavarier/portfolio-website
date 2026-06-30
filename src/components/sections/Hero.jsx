@@ -192,6 +192,7 @@ const Hero = () => {
           alignItems: 'center',
           gap: '8px',
           zIndex: 10,
+          pointerEvents: 'none',
         }}
       >
         <div
